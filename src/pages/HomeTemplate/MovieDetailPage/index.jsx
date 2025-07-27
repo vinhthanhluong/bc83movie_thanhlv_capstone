@@ -5,7 +5,7 @@ export default function MovieDetailPage() {
     <div className="bg">
       <div className="max-w-[1280px] mx-auto py-8 px-3.5">
         <div className="lg:grid grid-cols-8 gap-10">
-          <div className="max-w-xs mx-auto mb-[20px] group overflow-hidden col-span-2 aspect-w-7 aspect-h-10 w-full">
+          <div className="max-w-xs mx-auto mb-[20px] group overflow-hidden cursor-pointer img-movie relative col-span-2 aspect-w-7 aspect-h-10 w-full">
             <img
               className="w-full h-full object-contain group-hover:scale-110 transform transition-transform duration-300"
               src="https://image-worker.momocdn.net/img/90126602072536934-kimesstu.png?size=M&referer=cinema.momocdn.net"
