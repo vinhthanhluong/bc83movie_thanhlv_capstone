@@ -19,7 +19,7 @@ const router = [
     element: HomeTemplate,
     nested: [
       { path: "", element: HomePage },
-      { path: "movie-detail/:movieID", element: MovieDetailPage },
+      { path: "movie-detail", element: MovieDetailPage },
       { path: "book", element: BookTicketPage },
       { path: "login", element: Login },
       { path: "register", element: Register },
@@ -49,7 +49,9 @@ export const renderRouter = () => {
         </Route>
       );
     } else {
-      return <Route key={index} path={route.path} element={<route.element />} />;
+      return (
+        <Route key={index} path={route.path} element={<route.element />} />
+      );
     }
   });
 };
