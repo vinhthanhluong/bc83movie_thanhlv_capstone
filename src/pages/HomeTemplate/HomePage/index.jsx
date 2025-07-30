@@ -1,7 +1,12 @@
-import React from 'react'
+import MainVisual from "./MainVisual";
 
 export default function HomePage() {
   return (
-    <div>HomePage</div>
-  )
+    <>
+      <MainVisual />
+      <div className="container mx-auto">
+        
+      </div>
+    </>
+  );
 }

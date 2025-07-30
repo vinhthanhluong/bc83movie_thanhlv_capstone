@@ -1,0 +1,24 @@
+/* .swiper-slide {
+  transition: opacity 0.5s ease-in-out;
+}
+.swiper-slide:not(.swiper-slide-active) {
+  opacity: 0 !important;
+  z-index: 1;
+}
+.swiper-slide-active {
+  opacity: 1 !important;
+  z-index: 2;
+} */
+
+.mainVisual {
+}
+
+.mainVisual .swiper-pagination-bullet {
+    background-color: #fff;
+    opacity: 0.6;
+}
+.mainVisual .swiper-pagination-bullet-active {
+    opacity: 1;
+    background-color: var(--mainColor);
+}
+

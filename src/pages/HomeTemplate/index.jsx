@@ -5,10 +5,12 @@ import Footer from "./_components/Footer";
 
 export default function HomeTemplate() {
   return (
-    <div>
+    <>
       <Header />
-      <Outlet />
+      <div className="mt-[var(--header)]">
+        <Outlet />
+      </div>
       <Footer />
-    </div>
+    </>
   );
 }
