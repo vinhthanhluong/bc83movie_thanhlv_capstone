@@ -8,7 +8,7 @@ export default function Menu() {
           href="#"
           className="block py-1 px-2 text-gray-900 hover:text-[#d42a87] dark:text-white dark:hover:text-[#d42a87]"
         >
-          Home
+          Trang chủ
         </a>
       </li>
       <li>
@@ -16,7 +16,7 @@ export default function Menu() {
           href="#"
           className="block py-1 px-2 text-gray-900 hover:text-[#d42a87] dark:text-white dark:hover:text-[#d42a87]"
         >
-          Movie
+          Phim chiếu
         </a>
       </li>
       <li>
@@ -24,7 +24,7 @@ export default function Menu() {
           href="#"
           className="block py-1 px-2 text-gray-900 hover:text-[#d42a87] dark:text-white dark:hover:text-[#d42a87]"
         >
-          Cinema
+          Rạp phim
         </a>
       </li>
       <li>
@@ -32,7 +32,7 @@ export default function Menu() {
           href="#"
           className="block py-1 px-2 text-gray-900 hover:text-[#d42a87] dark:text-white dark:hover:text-[#d42a87]"
         >
-          Blog
+          Blog phim
         </a>
       </li>
     </ul>

@@ -18,13 +18,13 @@ export default function Footer() {
             </Link>
             <div className="text-center md:text-left md:pl-10 md:max-w-[300px] lg:max-w-max">
               <div className="text-sm text-white text-opacity-50 lg:leading-normal">
-                Head office:{" "}
+                Địa chỉ:{" "}
                 <strong>
-                  5th Floor No.126, Cao Thang Street, 3 Ward, Ho Chi Minh City
+                  Tầng 5, 126 Cao thắng, Quận 3, Thành phố Hồ Chí Minh
                 </strong>
               </div>
               <div className=" mt-0.5 text-sm text-white text-opacity-50">
-                Brand name: <strong>CycberMovie</strong>
+                Tên thương hiệu: <strong>CycberMovie</strong>
               </div>
               <div className=" mt-0.5 text-sm text-white text-opacity-50">
                 Phone: <strong>00-0000-0000</strong>
@@ -40,36 +40,30 @@ export default function Footer() {
 
           <div className="hidden md:block md:shrink-0 md:border-none md:pb-0">
             <div className="whitespace-nowrap text-xs font-bold uppercase text-white text-opacity-80">
-              Buy movie tickets
+              Mua vé xem phim
             </div>
             <div className="mt-1 md:mt-3 text-sm">
               <a
-                href="/cinema/lich-chieu?fromType=nav_footer"
-                target="_self"
-                rel="noreferrer"
-                className="flex items-center space-x-2 text-white text-opacity-50 duration-300 hover:text-opacity-100"
+                href="#"
+                className="flex items-center space-x-2 text-white text-opacity-50 duration-300 hover:text-[var(--mainColor)]"
               >
-                <span className="block ">Movie showtimes</span>
+                <span className="block ">Phim chiếu</span>
               </a>
             </div>
             <div className="mt-1 md:mt-3 text-sm">
               <a
-                href="/cinema/rap?fromType=nav_footer"
-                target="_self"
-                rel="noreferrer"
-                className="flex items-center space-x-2 text-white text-opacity-50 duration-300 hover:text-opacity-100"
+                href="#"
+                className="flex items-center space-x-2 text-white text-opacity-50 duration-300 hover:text-[var(--mainColor)"
               >
-                <span className="block ">Cinema</span>
+                <span className="block ">Rạp phim</span>
               </a>
             </div>
             <div className="mt-1 md:mt-3 text-sm">
               <a
-                href="/cinema/phim-chieu?fromType=nav_footer"
-                target="_self"
-                rel="noreferrer"
-                className="flex items-center space-x-2 text-white text-opacity-50 duration-300 hover:text-opacity-100"
+                href="#"
+                className="flex items-center space-x-2 text-white text-opacity-50 duration-300 hover:text-[var(--mainColor)"
               >
-                <span className="block ">Blog</span>
+                <span className="block ">Blog phim</span>
               </a>
             </div>
           </div>
@@ -149,7 +143,7 @@ export default function Footer() {
             </a>
           </div>
 
-          <div class="w-full text-sm text-white text-opacity-50 text-center md:hidden">
+          <div className="w-full text-sm text-white text-opacity-50 text-center md:hidden">
             © Copyright 2025. All Rights Reserved.
           </div>
         </div>
