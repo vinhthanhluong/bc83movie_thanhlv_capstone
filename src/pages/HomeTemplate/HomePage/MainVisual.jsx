@@ -1,11 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Autoplay, Pagination } from "swiper/modules";
 
-import "swiper/css";
-import "swiper/css/effect-fade";
-import "swiper/css/pagination";
-import "./home.css";
-
 export default function MainVisual() {
   return (
     <div className="mainVisual">
