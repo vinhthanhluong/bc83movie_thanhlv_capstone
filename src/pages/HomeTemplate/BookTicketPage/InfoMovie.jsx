@@ -109,6 +109,73 @@ export default function InfoMovie() {
           <li className="flex justify-start border-b border-dashed border-white py-2.5">
             <span className="w-[140px] flex">
               <svg
+                className="w-6 h-6 text-white dark:text-white mr-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width={24}
+                height={24}
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Giá vé
+            </span>
+            <span className="w-[calc(100% - 120px)] pl-5">77777</span>
+          </li>
+          <li className="flex justify-start border-b border-dashed border-white py-2.5">
+            <span className="w-[140px] flex">
+              <svg
+                className="w-6 h-6 text-white dark:text-white mr-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width={24}
+                height={24}
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Rạp chiếu
+            </span>
+            <span className="w-[calc(100% - 120px)] pl-5">
+              GLX - Huỳnh Tấn Phát
+            </span>
+          </li>
+          <li className="flex justify-start border-b border-dashed border-white py-2.5">
+            <span className="w-[140px] flex">
+              <svg
+                className="w-6 h-6 text-white dark:text-white mr-2"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width={24}
+                height={24}
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+              Rạp chiếu
+            </span>
+            <span className="w-[calc(100% - 120px)] pl-5">
+              Rạp 6
+            </span>
+          </li>
+          <li className="flex justify-start border-b border-dashed border-white py-2.5">
+            <span className="w-[140px] flex">
+              <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
