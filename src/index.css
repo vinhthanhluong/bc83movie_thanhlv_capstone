@@ -3,6 +3,8 @@
 @plugin "flowbite/plugin";
 @source "../node_modules/flowbite";
 
+
+
 :root {
     --header: 65px;
     --mainColor: #d42a87;
@@ -30,6 +32,4 @@
     max-width: 1310px;
 }
 
-.movieShow .swiper-button-disabled{
-    opacity: 0;
-}
+
