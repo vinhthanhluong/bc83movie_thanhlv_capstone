@@ -4,9 +4,7 @@ import { renderRouter } from "./router";
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        {renderRouter()}
-      </Routes>
+      <Routes>{renderRouter()}</Routes>
     </BrowserRouter>
   );
 }

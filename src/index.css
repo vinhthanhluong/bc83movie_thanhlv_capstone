@@ -8,6 +8,3 @@
     --mainColor: #d42a87;
     --black: #333;
 }
-body {
-    background-color: var(--black);
-}

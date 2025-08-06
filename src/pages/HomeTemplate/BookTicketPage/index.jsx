@@ -1244,7 +1244,7 @@ export default function BookTicketPage() {
             <button
               type="button"
               onClick={openModal}
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded flex items-center justify-center gap-2 mt-4"
+              className="w-full cursor-pointer bg-[#E82E96] hover:bg-[#E82E96] text-white font-bold py-2 px-4 rounded flex items-center justify-center gap-2 mt-4"
             >
               Xác nhận
             </button>
@@ -1277,78 +1277,53 @@ export default function BookTicketPage() {
                 leaveTo="opacity-0 scale-95"
               >
                 <Dialog.Panel className="w-full max-w-lg transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
-                  <div className="max-w-3xl mx-auto rounded-lg">
-                    <h2 className="text-2xl font-bold text-center text-blue-700 mb-6">
+                  <div className="max-w-md mx-auto p-6 rounded-lg bg-gray-900 shadow-lg">
+                    <h2 className="text-2xl font-semibold text-[#E82E96] text-center mb-6">
                       Xác nhận thông tin đặt vé
                     </h2>
-                    <table className="w-full table-auto border border-gray-300 text-gray-700">
-                      <tbody>
-                        <tr className="border-b">
-                          <td className="font-semibold px-4 py-3 bg-gray-100 w-1/3">
-                            Mã lịch chiếu
-                          </td>
-                          <td className="px-4 py-3">LC123456</td>
-                        </tr>
-                        <tr className="border-b">
-                          <td className="font-semibold px-4 py-3 bg-gray-100">
-                            Tên phim
-                          </td>
-                          <td className="px-4 py-3">Inside Out 2</td>
-                        </tr>
-                        <tr className="border-b">
-                          <td className="font-semibold px-4 py-3 bg-gray-100">
-                            Tên rạp chiếu
-                          </td>
-                          <td className="px-4 py-3">Beta Quang Trung</td>
-                        </tr>
-                        <tr className="border-b">
-                          <td className="font-semibold px-4 py-3 bg-gray-100">
-                            Địa chỉ
-                          </td>
-                          <td className="px-4 py-3">
-                            101 Quang Trung, Gò Vấp, TP.HCM
-                          </td>
-                        </tr>
-                        <tr className="border-b">
-                          <td className="font-semibold px-4 py-3 bg-gray-100">
-                            Phòng chiếu
-                          </td>
-                          <td className="px-4 py-3">P4</td>
-                        </tr>
-                        <tr className="border-b">
-                          <td className="font-semibold px-4 py-3 bg-gray-100">
-                            Ngày chiếu
-                          </td>
-                          <td className="px-4 py-3">05/08/2025</td>
-                        </tr>
-                        <tr className="border-b">
-                          <td className="font-semibold px-4 py-3 bg-gray-100">
-                            Giờ chiếu
-                          </td>
-                          <td className="px-4 py-3">23:40</td>
-                        </tr>
-                        <tr>
-                          <td className="font-semibold px-4 py-3 bg-gray-100">
-                            Ghế ngồi
-                          </td>
-                          <td className="px-4 py-3">A1, A2, A3</td>
-                        </tr>
-                        <tr>
-                          <td className="font-semibold px-4 py-3 bg-gray-100">
-                            Giá vé
-                          </td>
-                          <td className="px-4 py-3">1111111111111</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <div className="mt-6 text-center">
-                      <button
-                        onClick={closeModal}
-                        className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded shadow-md"
-                      >
-                        Xác nhận &amp; Thanh toán
-                      </button>
+                    <div className="space-y-4">
+                      <div className="flex justify-between border-b border-gray-700 pb-2">
+                        <span className="text-purple-400">Mã lịch chiếu</span>
+                        <span className="text-white">LC123456</span>
+                      </div>
+                      <div className="flex justify-between border-b border-gray-700 pb-2">
+                        <span className="text-purple-400">Tên phim</span>
+                        <span className="text-white">Inside Out 2</span>
+                      </div>
+                      <div className="flex justify-between border-b border-gray-700 pb-2">
+                        <span className="text-purple-400">Tên rạp chiếu</span>
+                        <span className="text-white">Beta Quang Trung</span>
+                      </div>
+                      <div className="flex justify-between border-b border-gray-700 pb-2">
+                        <span className="text-purple-400">Địa chỉ</span>
+                        <span className="text-right text-white">
+                          101 Quang Trung, Gò Vấp, TP.HCM
+                        </span>
+                      </div>
+                      <div className="flex justify-between border-b border-gray-700 pb-2">
+                        <span className="text-purple-400">Phòng chiếu</span>
+                        <span className="text-white">P4</span>
+                      </div>
+                      <div className="flex justify-between border-b border-gray-700 pb-2">
+                        <span className="text-purple-400">Ngày chiếu</span>
+                        <span className="text-white">05/08/2025</span>
+                      </div>
+                      <div className="flex justify-between border-b border-gray-700 pb-2">
+                        <span className="text-purple-400">Giờ chiếu</span>
+                        <span className="text-white">23:40</span>
+                      </div>
+                      <div className="flex justify-between border-b border-gray-700 pb-2">
+                        <span className="text-purple-400">Ghế ngồi</span>
+                        <span className="text-white">A1, A2, A3</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span className="text-purple-400">Giá vé</span>
+                        <span className="text-white">111111111111</span>
+                      </div>
                     </div>
+                    <button className="mt-6 w-full bg-gradient-to-r bg-[#E82E96] to-purple-900 hover:from-purple-700 hover:to-purple-800 text-white py-2 rounded-md transition duration-300">
+                      Xác nhận &amp; Thanh toán
+                    </button>
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
