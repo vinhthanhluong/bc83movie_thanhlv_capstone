@@ -15,11 +15,6 @@
   opacity: 0;
 }
 
-.pagination {
-}
-
-.pagination-prev {
-}
 
 .pagination-disable {
   opacity: 0.5;
@@ -27,9 +22,6 @@
 
 .pagination-active button {
   cursor: default;
-}
-
-.pagination-active button {
   background-color: #fff;
   font-weight: 700;
   --tw-shadow: 0 1px 3px 0 var(--tw-shadow-color, rgb(0 0 0 / 0.1)),
