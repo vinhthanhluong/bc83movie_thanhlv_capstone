@@ -110,7 +110,8 @@ export default function AdminTemplate() {
       </nav>
       <aside
         id="logo-sidebar"
-        className="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 "
+        // className="fixed top-0 left-0 z-40 w-64  h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 "
+        className="fixed top-0 left-0 z-40 w-64 md:w-54 lg:w-64 h-screen pt-20 transition-transform -translate-x-full bg-white border-r border-gray-200 md:translate-x-0 "
         aria-label="Sidebar"
       >
         <div className="h-full px-3 pb-4 overflow-y-auto bg-white ">
@@ -259,7 +260,8 @@ export default function AdminTemplate() {
           </ul>
         </div>
       </aside>
-      <div className="p-4 md:ml-64 h-full mt-16 md:mt-14">
+      {/* md:w-54 lg:w-64 */}
+      <div className="p-4 md:ml-54 lg:ml-64 h-full mt-16 md:mt-14">
         <Outlet />
       </div>
     </div>

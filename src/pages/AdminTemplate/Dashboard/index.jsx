@@ -155,7 +155,7 @@ export default function Dashboard() {
                     </div>
                   </td>
                   <td className="px-3 py-4">
-                    <span class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full">
+                    <span className="bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded-full">
                       Sắp chiếu
                     </span>
                   </td>
@@ -188,7 +188,7 @@ export default function Dashboard() {
                     </div>
                   </td>
                   <td className="px-3 py-4">
-                    <span class="bg-green-100 text-green-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-full ">
+                    <span className="bg-green-100 text-green-800 text-xs font-medium px-2.5 py-0.5 rounded-full ">
                       Đang chiếu
                     </span>
                   </td>
