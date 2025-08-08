@@ -2,7 +2,7 @@ import React from "react";
 
 export default function Login() {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-5">
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-5">
       <div className="bg-white rounded-lg shadow-lg flex w-full max-w-5xl overflow-hidden">
         {/* Left Image */}
         <div className="hidden md:flex w-1/2 bg-white items-center justify-center p-6">

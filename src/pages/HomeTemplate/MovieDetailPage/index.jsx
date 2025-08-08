@@ -1,5 +1,10 @@
 import React, { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Pagination, Navigation } from "swiper/modules";
+import "./style.css";
 
 export default function MovieDetailPage() {
   let [isOpen, setIsOpen] = useState(false);
@@ -24,9 +29,9 @@ export default function MovieDetailPage() {
     { day: "14", label: "Thứ 5" },
   ];
 
-
   return (
     <div className="mx-auto py-4 text-white">
+      {/*  */}
       <div className="relative bg-black text-white">
         <div className="absolute inset-0">
           <img
@@ -160,83 +165,76 @@ export default function MovieDetailPage() {
           </div>
 
           {/* Rạp */}
-          <div className="flex items-center space-x-4 overflow-x-auto py-4 px-2 border-[#E7E4E6] border-b pb-5 mb-5">
-            <button className="flex flex-col items-center space-y-1 text-purple-600">
-              <div className="w-12 h-12 rounded-xl border-2 border-purple-600 p-1 bg-purple-100 flex items-center justify-center">
-                <div className="w-full h-full bg-yellow-400 rounded-md flex items-center justify-center text-white font-bold">
-                  ★
-                </div>
-              </div>
-              <span className="text-sm font-medium">Tất cả</span>
-            </button>
-            <button className="flex flex-col items-center space-y-1 text-gray-700">
-              <img
-                src="https://homepage.momocdn.net/cinema/momo-amazone-s3-api-240829164527-638605467276820522.png"
-                alt="CGV"
-                className="w-12 h-12 object-contain rounded-md border bg-[#fff]"
-              />
-              <span className="text-sm font-medium text-white">CGV</span>
-            </button>
-            <button className="flex flex-col items-center space-y-1 text-gray-700">
-              <img
-                src="https://homepage.momocdn.net/blogscontents/momo-upload-api-210604170617-637584231772974269.png"
-                alt="Lotte Cinema"
-                className="w-12 h-12 object-contain rounded-md border bg-[#fff]"
-              />
-              <span className="text-sm font-medium text-center text-white">
-                Lotte Cin...
-              </span>
-            </button>
-            <button className="flex flex-col items-center space-y-1 text-gray-700">
-              <img
-                src="https://homepage.momocdn.net/cinema/momo-upload-api-211123095138-637732578984425272.png"
-                alt="Galaxy Cinema"
-                className="w-12 h-12 object-contain rounded-md border bg-[#fff]"
-              />
-              <span className="text-sm font-medium text-center text-white">
-                Galaxy Ci...
-              </span>
-            </button>
-            <button className="flex flex-col items-center space-y-1 text-gray-700">
-              <img
-                src="https://homepage.momocdn.net/blogscontents/momo-upload-api-210604170453-637584230934981809.png"
-                alt="BHD Star"
-                className="w-12 h-12 object-contain rounded-md border bg-[#fff]"
-              />
-              <span className="text-sm font-medium text-center text-white">
-                BHD Star
-              </span>
-            </button>
-            <button className="flex flex-col items-center space-y-1 text-gray-700">
-              <img
-                src="https://homepage.momocdn.net/cinema/momo-upload-api-210813104719-637644484394328824.png"
-                alt="Beta Cinemas"
-                className="w-12 h-12 object-contain rounded-md border bg-[#fff]"
-              />
-              <span className="text-sm font-medium text-center text-white">
-                Beta Cine...
-              </span>
-            </button>
-            <button className="flex flex-col items-center space-y-1 text-gray-700">
-              <img
-                src="https://homepage.momocdn.net/blogscontents/momo-upload-api-210604170530-637584231309495829.png"
-                alt="Cinestar"
-                className="w-12 h-12 object-contain rounded-md border bg-[#fff]"
-              />
-              <span className="text-sm font-medium text-center text-white">
-                Cinestar
-              </span>
-            </button>
-            <button className="flex flex-col items-center space-y-1 text-gray-700">
-              <img
-                src="https://homepage.momocdn.net/blogscontents/momo-upload-api-210604170511-637584231119272266.png"
-                alt="Mega GS"
-                className="w-12 h-12 object-contain rounded-md border bg-[#fff]"
-              />
-              <span className="text-sm font-medium text-center text-white">
-                Mega GS
-              </span>
-            </button>
+          <div className="relative flex items-center overflow-x-auto py-4 px-2 border-[#E7E4E6] border-b pb-5 mb-5 pl-8">
+            <Swiper
+              slidesPerView={8}
+              spaceBetween={1}
+              modules={[Navigation]}
+              className="mySwiper"
+              breakpoints={{
+                320: { slidesPerView: 5 },
+                1024: { slidesPerView: 6 },
+                1280: { slidesPerView: 8 },
+              }}
+              navigation={{
+                nextEl: ".swiper-button-next",
+                prevEl: ".swiper-button-prev",
+              }}
+            >
+              {[...Array(20)].map((_, index) => (
+                <SwiperSlide keu={index}>
+                  <button className="flex flex-col items-center space-y-1 text-gray-700">
+                    <img
+                      src="https://homepage.momocdn.net/blogscontents/momo-upload-api-210604170453-637584230934981809.png"
+                      alt="BHD Star"
+                      className="w-12 h-12 object-contain rounded-md border bg-[#fff]"
+                    />
+                    <span className="text-sm font-medium text-center text-black">
+                      BHD Star
+                    </span>
+                  </button>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+            {/* Navigation buttons */}
+            <div className="swiper-button-prev absolute left-0 top-1/2 -translate-y-1/2 z-10 text-white text-3xl cursor-pointer">
+              <svg
+                className="w-6 h-6 text-gray-800 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width={24}
+                height={24}
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="m15 19-7-7 7-7"
+                />
+              </svg>
+            </div>
+            <div className="swiper-button-next absolute right-0 top-1/2 -translate-y-1/2 z-10 text-white text-3xl cursor-pointer">
+              <svg
+                className="w-6 h-6 text-gray-800 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width={24}
+                height={24}
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="m9 5 7 7-7 7"
+                />
+              </svg>
+            </div>
           </div>
 
           {/* Danh sách rạp */}
