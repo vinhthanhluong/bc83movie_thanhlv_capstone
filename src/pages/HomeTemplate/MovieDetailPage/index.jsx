@@ -24,43 +24,6 @@ export default function MovieDetailPage() {
     { day: "14", label: "Thứ 5" },
   ];
 
-  const cinemas = [
-    {
-      name: "CGV Aeon Tân Phú",
-      address:
-        "Lầu 3, Aeon Mall 30 Bờ Bao Tân Thắng, P. Sơn Kỳ Quận Tân Phú TP. Hồ Chí Minh",
-      showtime: "17:50 ~ 19:21",
-    },
-    {
-      name: "CGV Hùng Vương Plaza",
-      address:
-        "Tầng 7 | Hùng Vương Plaza 126 Hùng Vương Quận 5 Tp. Hồ Chí Minh",
-    },
-    {
-      name: "CGV Liberty Citypoint",
-      address:
-        "Tầng M, 1 | Khách sạn Liberty Center Saigon Citypoint, Số 59 - 61 đường Pasteur, quận 1",
-    },
-    {
-      name: "CGV Lý Chính Thắng",
-      address:
-        "Tầng 3 | Tòa nhà Terra Royal, số 83 đường Lý Chính Thắng, quận 3",
-    },
-    {
-      name: "CGV Menas Mall (CGV CT Plaza)",
-      address: "Tầng 10, CT Plaza, 60A Trường Sơn, P.2, Quận Tân Bình",
-    },
-    {
-      name: "CGV Pandora City",
-      address:
-        "Tầng 3 | Pandora City Shopping Centre, số 1/1 đường Trường Chinh, quận Tân Phú",
-    },
-    {
-      name: "CGV Saigonres Nguyễn Xí",
-      address:
-        "Tầng 4-5, Saigonres Plaza, 79/81 Nguyễn Xí, P.26, Q. Bình Thạnh",
-    },
-  ];
 
   return (
     <div className="mx-auto py-4 text-white">
