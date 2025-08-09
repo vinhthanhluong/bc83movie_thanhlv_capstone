@@ -15,7 +15,6 @@
   opacity: 0;
 }
 
-
 .pagination-disable {
   opacity: 0.5;
 }
@@ -28,4 +27,26 @@
     0 1px 2px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
   box-shadow: var(--tw-inset-shadow), var(--tw-inset-ring-shadow), var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
     var(--tw-shadow);
+}
+
+.counterMovie {
+  counter-reset: itemMovie;
+}
+
+.counterMovie .cImg::after {
+  content: counter(itemMovie);
+  counter-increment: itemMovie;
+  position: absolute;
+  left: 8px;
+  bottom: -10px;
+  color: #fff;
+  z-index: 20;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1;
+  text-shadow:
+    0 0 4px rgb(0 0 0 / 0.1),
+    0 0 4px rgb(0 0 0 / 0.1),
+    0 0 4px rgb(0 0 0 / 0.1),
+    0 0 4px rgb(0 0 0 / 0.1);
 }
