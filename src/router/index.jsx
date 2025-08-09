@@ -25,7 +25,7 @@ const router = [
     nested: [
       { path: "", element: HomePage },
       { path: "list-movie", element: ListMoviePage },
-      { path: "movie-detail/:movieID", element: MovieDetailPage },
+      { path: "movie-detail", element: MovieDetailPage },
       { path: "book", element: BookTicketPage },
       { path: "login", element: Login },
       { path: "register", element: Register },
