@@ -1,28 +1,27 @@
-import { useDispatch } from "react-redux";
-import { setOpenPopup } from "../../../store/homeSlice";
+import { useHomeStore } from "../../../store/home.store.js";
 
-export default function MovieItem({movieNumber = false}) {
-  const dispatch = useDispatch();
+export default function MovieItem({ movie = {} }) {
+  const setIsOpenMovie = useHomeStore((state) => state.setIsOpenMovie);
+  const setMoviePopup = useHomeStore((state) => state.setMoviePopup);
 
   return (
-    <div className="item">
+    <div className="item" onClick={() => setMoviePopup(movie)}>
       <div
-        className="relative border border-gray-500 rounded-lg mb-2 cursor-pointer group"
-        onClick={() => dispatch(setOpenPopup(true))}
+        className="relative border border-gray-500 rounded-lg mb-2 cursor-pointer group cImg"
+        onClick={() => setIsOpenMovie(true)}
       >
-        <div className="flex gap-2 absolute top-3 left-3 z-1">
-          <p className="px-2 py-1 text-sm md:text-xs lg:text-sm rounded-xs leading-none bg-red-500  text-white">
-            New
-          </p>
-          <p className="px-2 py-1 text-sm md:text-xs lg:text-sm rounded-xs leading-none bg-[#E88021]  text-white">
-            16+
-          </p>
+        <div className=" absolute top-3 left-3 z-1">
+          {movie.hot && (
+            <p className="px-2 py-1 text-sm md:text-xs lg:text-sm font-medium rounded-xs leading-none bg-red-500  text-white">
+              Hot
+            </p>
+          )}
         </div>
         <div className="aspect-w-7 aspect-h-10 w-full scale-100 rounded-lg overflow-hidden">
           <img
             className="absolute inset-0 h-full w-full object-cover object-center transition-all duration-300 group-hover:scale-105"
-            src="https://image-worker.momocdn.net/img/89520077420501400-conannn.png?size=M&referer=cinema.momocdn.net"
-            alt="Thám Tử Lừng Danh Conan: Dư Ảnh Của Độc "
+            src={movie.hinhAnh}
+            alt={movie.biDanh}
           />
         </div>
         <div className="absolute inset-0 m-auto w-10 h-10 transition-all duration-300 group-hover:scale-110">
@@ -51,19 +50,13 @@ export default function MovieItem({movieNumber = false}) {
             </g>
           </svg>
         </div>
-        { movieNumber && <p className="absolute -bottom-2 left-0 z-1 text-4xl font-bold text-shadow-sm text-shadow-gray-500 md:text-5xl">
-          1
-        </p>}
       </div>
-      <div className="block hover:text-[var(--mainColor)] cursor-pointer group">
+      <div className="block hover:text-[var(--mainColor)] cursor-pointer mt-2 group">
         <p className="text-sm font-medium line-clamp-1 transition-all duration-300 md:text-base">
-          Thám Tử Lừng Danh Conan: Dư Ảnh Của Độc Nhãn
-        </p>
-        <p className="text-xs  md:text-sm transition-all duration-300 group-hover:text-[var(--mainColor)]">
-          Hoạt hình, Hình sự
+          {movie.tenPhim}
         </p>
       </div>
-      <p className=" text-sm flex items-center mt-2">
+      <p className=" text-sm flex items-center mt-1">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 20 20"
@@ -73,8 +66,7 @@ export default function MovieItem({movieNumber = false}) {
         >
           <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
         </svg>
-
-        <span>8.8</span>
+        <span>{movie.danhGia}</span>
       </p>
     </div>
   );

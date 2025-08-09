@@ -1,10 +1,15 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 
-import PopupMovie from "./PopupMovie";
 import MovieItem from "./MovieItem";
+import { useQuery } from "@tanstack/react-query";
+import { getMoviePagi } from "../../../service/movie.api";
 
 export default function MovieComing() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["movie-coming"],
+    queryFn: () => getMoviePagi(14),
+  });
   return (
     <div className="movieComing py-8 md:py-10 lg:py-14 ">
       <div className="max-w-screen-xl px-5 mx-auto md:px-7 xl:px-5">
@@ -70,29 +75,18 @@ export default function MovieComing() {
               },
             }}
           >
-            <SwiperSlide>
-              <MovieItem />
-            </SwiperSlide>
-            <SwiperSlide>
-              <MovieItem />
-            </SwiperSlide>
-            <SwiperSlide>
-              <MovieItem />
-            </SwiperSlide>
-            <SwiperSlide>
-              <MovieItem />
-            </SwiperSlide>
-            <SwiperSlide>
-              <MovieItem />
-            </SwiperSlide>
-            <SwiperSlide>
-              <MovieItem />
-            </SwiperSlide>
+            {data?.items?.map((movie, index) => {
+              if (movie.sapChieu) {
+                return (
+                  <SwiperSlide key={index}>
+                    <MovieItem movie={movie} />
+                  </SwiperSlide>
+                );
+              }
+            })}
           </Swiper>
         </div>
       </div>
-
-      <PopupMovie />
     </div>
   );
 }

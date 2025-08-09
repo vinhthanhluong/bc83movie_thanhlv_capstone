@@ -1,8 +1,14 @@
-import React from "react";
 import MovieItem from "./MovieItem";
 import PaginationCustom from "../_components/PaginationCustom";
+import { useQuery } from "@tanstack/react-query";
+import { getMoviePagi } from "../../../service/movie.api";
 
 export default function ListMovie() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["Movie-list"],
+    queryFn: () => getMoviePagi(10),
+  });
+
   return (
     <div className="relative bg-gray-50 pb-6 pt-6  md:py-14">
       <div className="max-w-screen-xl px-5 mx-auto md:px-7 xl:px-5">
@@ -38,7 +44,7 @@ export default function ListMovie() {
               <input
                 type="search"
                 id="default-search"
-                className="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-sm bg-gray-50 focus:ring-[var(--mainColor)] focus:border-[var(--mainColor)] "
+                className="block w-full px-4 py-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-sm bg-gray-50 focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-300 "
                 placeholder="Tìm theo tên phim..."
                 required
               />
@@ -46,21 +52,9 @@ export default function ListMovie() {
           </form>
         </div>
         <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:gap-5 md:grid-cols-4 lg:grid-cols-5 mb-5 md:mb-7">
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
-          <MovieItem />
+          {data?.items?.map((item, index) => {
+            return <MovieItem key={index} movie={item} />;
+          })}
         </div>
 
         <PaginationCustom />
