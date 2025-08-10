@@ -6,7 +6,7 @@ import { format } from "date-fns";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
-import MovieShowing from "./movieShowing";
+import MovieShowing from "./MovieShowing";
 import { getCinemaDetail } from "../../../service/cinema.api.js";
 import PopupMovie from "../_components/PopupMovie";
 import { useHomeStore } from "../../../store/home.store.js";
