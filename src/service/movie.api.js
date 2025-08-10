@@ -13,7 +13,7 @@ export const getBannerMovie = async () => {
 export const getMoviePagi = async (numItem = 10, numPagi = 1) => {
   try {
     const response = await api.get(
-      `/QuanLyPhim/LayDanhSachPhimPhanTrang?maNhom=GP02&soTrang=${numPagi}&soPhanTuTrenTrang=${numItem}`
+      `/QuanLyPhim/LayDanhSachPhimPhanTrang?maNhom=GP01&soTrang=${numPagi}&soPhanTuTrenTrang=${numItem}`
     );
     return response.data.content;
   } catch (error) {
@@ -21,3 +21,17 @@ export const getMoviePagi = async (numItem = 10, numPagi = 1) => {
     throw error;
   }
 };
+
+// export const getMovieDetail = async (movieId) => {
+//   try {
+//     const response = await api.get(`/QuanLyPhim/LayThongTinPhim`, {
+//       params: {
+//         MaPhim: movieId,
+//       },
+//     });
+//     return response.data.content;
+//   } catch (error) {
+//     console.log("🌲 ~ getMovieDetail ~ error:", error);
+//     throw error;
+//   }
+// };

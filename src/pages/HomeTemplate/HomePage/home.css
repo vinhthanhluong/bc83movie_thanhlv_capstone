@@ -50,3 +50,11 @@
     0 0 4px rgb(0 0 0 / 0.1),
     0 0 4px rgb(0 0 0 / 0.1);
 }
+
+
+.slide-alert {
+  animation:
+    slide-in-top 0.5s ease forwards,
+    slide-out-top 1s ease 2.5s forwards; 
+}
+
