@@ -12,8 +12,9 @@ export default function HomeTemplate() {
       <Header />
       <div className="mt-[var(--header)]">
         <Outlet />
-        {alert && <Alert color={alert.color} text={alert.text} />}
       </div>
+      {alert && <Alert color={alert.color} text={alert.text} />}
+       {/* <Alert color={'blue'} text={'alert.text'} /> */}
       <Footer />
     </>
   );

@@ -1,11 +1,11 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
-import { useHomeStore } from "../../../store/home.store.js";
+import { useHomeStore } from "../../../../store/home.store.js";
 
 export default function PopupMovie({ movie }) {
   const isOpenMovie = useHomeStore((state) => state.isOpenMovie);
   const setIsOpenMovie = useHomeStore((state) => state.setIsOpenMovie);
 
-  const linkYoutube = movie?.trailer.slice(-11);
+  const linkYoutube = movie?.trailer && movie.trailer.slice(-11);
 
   return (
     <>
@@ -15,9 +15,9 @@ export default function PopupMovie({ movie }) {
         className="relative z-50"
       >
         <div className="fixed inset-0 flex w-screen items-center justify-center p-4 bg-[#0009]">
-          <DialogPanel className="max-w-3xl bg-[#191617] text-white rounded-lg relative">
+          <DialogPanel className="max-w-3xl bg-[#191617] text-white rounded-lg relative slide-in-bottom">
             <div
-              className="absolute top-[-20px] right-[-20px] cursor-pointer"
+              className="absolute z-2 top-[-20px] right-[-20px] cursor-pointer"
               onClick={() => setIsOpenMovie(false)}
             >
               <svg

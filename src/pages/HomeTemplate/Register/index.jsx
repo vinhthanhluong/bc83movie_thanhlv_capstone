@@ -24,6 +24,9 @@ export default function Register() {
         color: "green",
         text: "Đăng ký thành công",
       });
+      // setTimeout(() => {
+        
+      // }, 3500);
     },
     onError: (error) => {
       setAlert({
@@ -32,6 +35,8 @@ export default function Register() {
       });
     },
   });
+
+ 
 
   const handleSubmitRegister = (values) => {
     mutate(values);
@@ -48,9 +53,8 @@ export default function Register() {
           />
         </div>
         <div className="w-full md:w-1/2 p-8">
-          <h2 className="text-3xl font-bold mb-6 text-gray-800">Đăng ký</h2>
+          <h2 className="text-2xl font-bold mb-6 text-center">Đăng ký</h2>
           <form
-            // method="POST"
             className="space-y-4"
             onSubmit={handleSubmit(handleSubmitRegister)}
           >
@@ -127,7 +131,7 @@ export default function Register() {
             </div>
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-md hover:opacity-90 transition"
+              className="flex justify-center items-center w-full py-2 px-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-md hover:opacity-90 transition"
             >
               {isPending && (
                 <svg

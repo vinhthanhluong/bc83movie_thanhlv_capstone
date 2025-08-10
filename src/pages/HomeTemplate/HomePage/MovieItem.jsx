@@ -1,6 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { useHomeStore } from "../../../store/home.store.js";
 
 export default function MovieItem({ movie = {} }) {
+  const navigate = useNavigate();
   const setIsOpenMovie = useHomeStore((state) => state.setIsOpenMovie);
   const setMoviePopup = useHomeStore((state) => state.setMoviePopup);
 
@@ -51,8 +53,11 @@ export default function MovieItem({ movie = {} }) {
           </svg>
         </div>
       </div>
-      <div className="block hover:text-[var(--mainColor)] cursor-pointer mt-2 group">
-        <p className="text-sm font-medium line-clamp-1 transition-all duration-300 md:text-base">
+      <div className="block hover:text-[var(--mainColor)]  mt-2 group">
+        <p
+          className="cursor-pointer text-sm font-medium line-clamp-1 transition-all duration-300 md:text-base"
+          onClick={() => navigate(`/movie-detail/${movie.maPhim}`)}
+        >
           {movie.tenPhim}
         </p>
       </div>
