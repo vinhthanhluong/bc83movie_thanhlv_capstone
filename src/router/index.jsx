@@ -26,7 +26,7 @@ const router = [
       { path: "", element: HomePage },
       { path: "list-movie", element: ListMoviePage },
       { path: "movie-detail/:movieId", element: MovieDetailPage },
-      { path: "book", element: BookTicketPage },
+      { path: "book-ticket/:ticketId", element: BookTicketPage },
       { path: "login", element: Login },
       { path: "register", element: Register },
     ],

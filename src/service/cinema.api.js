@@ -13,3 +13,17 @@ export const getCinemaDetail = async (movieId) => {
     throw error;
   }
 };
+
+export const getCinemaTicket = async (ticketId) => {
+  try {
+    const response = await api.get(`/QuanLyDatVe/LayDanhSachPhongVe`, {
+      params: {
+        MaLichChieu: ticketId,
+      },
+    });
+    return response.data.content;
+  } catch (error) {
+    console.log("🌲 ~ getCinemaTicket ~ error:", error)
+    throw error;
+  }
+};
