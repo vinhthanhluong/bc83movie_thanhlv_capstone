@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Star } from "lucide-react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
 
@@ -10,15 +10,16 @@ import MovieShowing from "./MovieShowing";
 import { getCinemaDetail } from "../../../service/cinema.api.js";
 import PopupMovie from "../_components/PopupMovie";
 import { useHomeStore } from "../../../store/home.store.js";
+import { useCinemaStore } from "../../../store/cinema.store.js";
 
 export default function MovieDetailPage() {
   const { movieId } = useParams();
+  const navigate = useNavigate();
   const setIsOpenMovie = useHomeStore((state) => state.setIsOpenMovie);
 
   const [isReadMore, setIsReadMore] = useState(false);
 
   const [cinemaItem, setCinemaItem] = useState(null);
-  // console.log("🌲 ~ MovieDetailPage ~ cinemaItem:", cinemaItem);
   const [isActive, setIsActive] = useState(cinemaItem?.maHeThongRap);
 
   const { data = {}, isLoading } = useQuery({
@@ -142,8 +143,8 @@ export default function MovieDetailPage() {
       </div>
 
       <div className="md:grid grid-cols-7 items-start w-full max-w-7xl mx-auto">
-        <div className="mx-auto w-full py-4 text-sm border-[#E7E4E6] mt-7 border col-span-4 rounded-lg">
-          <div className="px-5 border-b pb-5 border-[#E7E4E6]">
+        <div className="mx-auto w-full pt-4 text-sm border-[#E7E4E6] mt-7 border col-span-4 rounded-lg overflow-hidden">
+          <div className="px-5 pb-5">
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold text-black">
                 Lịch chiếu {data.tenPhim}
@@ -195,7 +196,7 @@ export default function MovieDetailPage() {
             </div>
           </div>
 
-          <div className="relative flex items-center overflow-x-auto py-4 px-5 border-[#E7E4E6] border-b">
+          <div className="relative flex items-center overflow-x-auto py-4 px-5 border-[#E7E4E6] border-t">
             {/* Navigation buttons */}
             <div className="cinema-swiper-next bg-white px-1 absolute right-0 inset-y-0 flex items-center z-10 text-white text-3xl cursor-pointer [&.swiper-button-disabled]:opacity-0">
               <svg
@@ -249,7 +250,7 @@ export default function MovieDetailPage() {
                 return (
                   <SwiperSlide key={index}>
                     <button
-                      className={`flex flex-col items-center space-y-1 text-gray-700 cursor-pointer`}
+                      className="flex flex-col items-center space-y-1 text-gray-700 cursor-pointer w-12"
                       onClick={() => {
                         setCinemaItem(cinema);
                         setIsActive(cinema.maHeThongRap);
@@ -258,13 +259,13 @@ export default function MovieDetailPage() {
                       <img
                         src={cinema.logo}
                         alt={cinema.maHeThongRap}
-                        className={`relative mx-auto flex h-12 w-12 p-1.5 items-center justify-center overflow-hidden rounded-lg border bg-white border-gray-200 ${
+                        className={`relative mx-auto flex p-1.5 items-center justify-center overflow-hidden rounded-lg border bg-white border-gray-200 ${
                           cinema.maHeThongRap === isActive
                             ? "border-pink-600"
                             : "border-gray-200"
                         }`}
                       />
-                      <span className="mt-2 overflow-hidden text-ellipsis whitespace-nowrap text-center text-xs text-gray-500">
+                      <span className="mt-2 w-full overflow-hidden text-ellipsis whitespace-nowrap overflow-hidden text-center text-xs text-gray-500 text-ellipsis whitespace-nowrap">
                         {cinema.tenHeThongRap}
                       </span>
                     </button>
@@ -299,7 +300,7 @@ export default function MovieDetailPage() {
             {cinemaItem?.cumRapChieu?.map((item, index) => (
               <div
                 key={index}
-                className="flex justify-between items-start p-5 bg-white hover:bg-gray-50 transition border-b border-[#E7E4E6]"
+                className="flex justify-between items-start p-5 bg-white hover:bg-gray-50 transition border-t border-[#E7E4E6]"
               >
                 <div>
                   <div className="flex items-center">
@@ -319,7 +320,10 @@ export default function MovieDetailPage() {
                     {item?.lichChieuPhim?.map((itm, i) => (
                       <button
                         key={i}
-                        className="px-5 py-1.5 border border-blue-500 text-black rounded hover:bg-blue-50 transition"
+                        className="px-5 py-1.5 border border-pink-500 text-black rounded hover:bg-pink-100 transition cursor-pointer"
+                        onClick={() => {
+                          navigate(`/book-ticket/${itm.maLichChieu}`)
+                        }}
                       >
                         {itm.ngayChieuGioChieu &&
                           format(itm.ngayChieuGioChieu, "HH:mm")}
@@ -330,9 +334,9 @@ export default function MovieDetailPage() {
               </div>
             ))}
 
-            <button className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded mx-auto flex mt-4 transition-all duration-300">
+            {/* <button className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded mx-auto flex mt-4 transition-all duration-300">
               Xem thêm
-            </button>
+            </button> */}
           </div>
         </div>
         <div className="mt-4 col-span-3 lg:pl-5">

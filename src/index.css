@@ -84,6 +84,25 @@
     width: auto;
 }
 
-.cinema-swiper{
+.cinema-swiper {
     margin-left: 0 !important;
+}
+
+.counter-post-detail {
+    counter-reset: pdetail;
+}
+
+.counter-post-detail > div::before {
+    content: counter(pdetail);
+    counter-increment: pdetail;
+    position: absolute;
+    bottom: 3px;
+    left: 4px;
+    color: #fff;
+    text-shadow: 0 0 2px rgb(0, 0, 0, 10);
+    font-size: 40px;
+    font-weight: 600;
+    line-height: 1;
+    z-index: 1;
+    pointer-events: none;
 }
