@@ -3,18 +3,46 @@ import { useForm } from "react-hook-form";
 import { getRegisterApi } from "../../../service/auth.api";
 import { useAuthStore } from "../../../store/auth.store";
 import { useNavigate } from "react-router-dom";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const schema = z.object({
+  taiKhoan: z.string().nonempty("Tài khoản không được để trống"),
+  matKhau: z.string().nonempty("Mật khẩu không được để trống"),
+  email: z
+    .string()
+    .nonempty("Email không được để trống")
+    .regex(
+      /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+      "Vui lòng nhập đúng định dạng"
+    ),
+  soDt: z
+    .string()
+    .nonempty("Số điện thoại không được để trống")
+    .regex(/^\d+$/, "Số điện thoại chỉ được chứa chữ số"),
+  hoTen: z.string().nonempty("Họ tên không được để trống"),
+  dieuKhoan: z.boolean().refine((val) => val === true, {
+    message: "Bạn phải đồng ý điều khoản",
+  }),
+});
 
 export default function Register() {
   const navigate = useNavigate();
   const setAlert = useAuthStore((state) => state.setAlert);
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       taiKhoan: "",
       matKhau: "",
       email: "",
       soDt: "",
       hoTen: "",
+      dieuKhoan: false,
     },
+    resolver: zodResolver(schema),
   });
 
   const { mutate, isPending } = useMutation({
@@ -24,9 +52,6 @@ export default function Register() {
         color: "green",
         text: "Đăng ký thành công",
       });
-      // setTimeout(() => {
-        
-      // }, 3500);
     },
     onError: (error) => {
       setAlert({
@@ -35,8 +60,6 @@ export default function Register() {
       });
     },
   });
-
- 
 
   const handleSubmitRegister = (values) => {
     mutate(values);
@@ -60,7 +83,7 @@ export default function Register() {
           >
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Tài khoản
+                Tài khoản <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -68,10 +91,15 @@ export default function Register() {
                 className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-300"
                 {...register("taiKhoan")}
               />
+              {errors.taiKhoan?.message && (
+                <p className="text-red-700 text-sm mt-1">
+                  {errors.taiKhoan?.message}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Mật khẩu
+                Mật khẩu <span className="text-red-500">*</span>
               </label>
               <input
                 type="password"
@@ -79,10 +107,15 @@ export default function Register() {
                 className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-300"
                 {...register("matKhau")}
               />
+              {errors.matKhau?.message && (
+                <p className="text-red-700 text-sm mt-1">
+                  {errors.matKhau?.message}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Họ tên
+                Họ tên <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -90,10 +123,15 @@ export default function Register() {
                 className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-300"
                 {...register("hoTen")}
               />
+              {errors.hoTen?.message && (
+                <p className="text-red-700 text-sm mt-1">
+                  {errors.hoTen?.message}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Email
+                Email <span className="text-red-500">*</span>
               </label>
               <input
                 type="email"
@@ -101,10 +139,15 @@ export default function Register() {
                 className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-300"
                 {...register("email")}
               />
+              {errors.email?.message && (
+                <p className="text-red-700 text-sm mt-1">
+                  {errors.email?.message}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Số điện thoại
+                Số điện thoại <span className="text-red-500">*</span>
               </label>
               <input
                 type="tel"
@@ -112,23 +155,31 @@ export default function Register() {
                 className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-300"
                 {...register("soDt")}
               />
+              {errors.soDt?.message && (
+                <p className="text-red-700 text-sm mt-1">
+                  {errors.soDt?.message}
+                </p>
+              )}
             </div>
 
             <div className="flex items-center">
               <input
                 type="checkbox"
                 className="h-4 w-4 text-purple-600 focus:ring-purple-400 border-gray-300 rounded"
+                {...register("dieuKhoan")}
               />
-              <label className="ml-2 text-sm text-gray-700">
+              
+              <label className={`ml-2 text-sm text-gray-700 ${errors.dieuKhoan?.message ? "text-red-700" :""}`}>
                 Tôi đồng ý với
                 <a
                   href="#"
                   className="text-purple-600 ml-1 font-medium hover:underline"
                 >
-                  Điều khoản sử dụng
+                  Điều khoản sử dụng <span className="text-red-500">*</span>
                 </a>
               </label>
             </div>
+           
             <button
               type="submit"
               className="flex justify-center items-center w-full py-2 px-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-md hover:opacity-90 transition"

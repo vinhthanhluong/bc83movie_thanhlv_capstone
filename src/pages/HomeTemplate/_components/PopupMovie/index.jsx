@@ -1,9 +1,12 @@
 import { Dialog, DialogPanel } from "@headlessui/react";
 import { useHomeStore } from "../../../../store/home.store.js";
+import { useNavigate } from "react-router-dom";
 
 export default function PopupMovie({ movie }) {
   const isOpenMovie = useHomeStore((state) => state.isOpenMovie);
   const setIsOpenMovie = useHomeStore((state) => state.setIsOpenMovie);
+
+  const navigate = useNavigate();
 
   const linkYoutube = movie?.trailer && movie.trailer.slice(-11);
 
@@ -64,7 +67,13 @@ export default function PopupMovie({ movie }) {
                 <p className="text-sm opacity-70">{movie?.moTa}</p>
 
                 <div className="flex items-center gap-2 mt-4">
-                  <button className="text-white bg-[var(--mainColor)] hover:bg-[#991d61] font-medium rounded-md transition-all duration-300 cursor-pointer text-sm px-5 py-2.5">
+                  <button
+                    className="text-white bg-[var(--mainColor)] hover:bg-[#991d61] font-medium rounded-md transition-all duration-300 cursor-pointer text-sm px-5 py-2.5"
+                    onClick={() => {
+                      navigate(`/movie-detail/${movie?.maPhim}`);
+                      setIsOpenMovie(false);
+                    }}
+                  >
                     Đặt vé
                   </button>
                   <button

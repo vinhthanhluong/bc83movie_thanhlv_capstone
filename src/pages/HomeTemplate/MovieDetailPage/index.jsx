@@ -11,6 +11,7 @@ import { getCinemaDetail } from "../../../service/cinema.api.js";
 import PopupMovie from "../_components/PopupMovie";
 import { useHomeStore } from "../../../store/home.store.js";
 import { useCinemaStore } from "../../../store/cinema.store.js";
+import Loading from "../_components/Loading/index.jsx";
 
 export default function MovieDetailPage() {
   const { movieId } = useParams();
@@ -198,44 +199,47 @@ export default function MovieDetailPage() {
 
           <div className="relative flex items-center overflow-x-auto py-4 px-5 border-[#E7E4E6] border-t">
             {/* Navigation buttons */}
-            <div className="cinema-swiper-next bg-white px-1 absolute right-0 inset-y-0 flex items-center z-10 text-white text-3xl cursor-pointer [&.swiper-button-disabled]:opacity-0">
-              <svg
-                className="w-6 h-6 text-gray-800 dark:text-white"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="m9 5 7 7-7 7"
-                />
-              </svg>
-            </div>
-            <div className="cinema-swiper-prev bg-white px-1 absolute left-0 inset-y-0 flex items-center z-10 text-white text-3xl cursor-pointer [&.swiper-button-disabled]:opacity-0">
-              <svg
-                className="w-6 h-6 text-gray-800 dark:text-white"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                width={24}
-                height={24}
-                fill="none"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="m15 19-7-7 7-7"
-                />
-              </svg>
-            </div>
+       
+                <div className="cinema-swiper-next bg-white px-1 absolute right-0 inset-y-0 flex items-center z-10 text-white text-3xl cursor-pointer [&.swiper-button-disabled]:opacity-0">
+                  <svg
+                    className="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={24}
+                    height={24}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="m9 5 7 7-7 7"
+                    />
+                  </svg>
+                </div>
+                <div className="cinema-swiper-prev bg-white px-1 absolute left-0 inset-y-0 flex items-center z-10 text-white text-3xl cursor-pointer [&.swiper-button-disabled]:opacity-0">
+                  <svg
+                    className="w-6 h-6 text-gray-800 dark:text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width={24}
+                    height={24}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="m15 19-7-7 7-7"
+                    />
+                  </svg>
+                </div>
+           
+           
             <Swiper
               slidesPerView={"auto"}
               spaceBetween={10}
@@ -275,8 +279,8 @@ export default function MovieDetailPage() {
             </Swiper>
           </div>
 
-          <div className="max-w-3xl mx-auto relative">
-            {isLoading && (
+          <div className="max-w-3xl mx-auto relative min-h-[300px]">
+            {/* {isLoading && (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-100/50">
                 <svg
                   aria-hidden="true"
@@ -295,7 +299,9 @@ export default function MovieDetailPage() {
                   />
                 </svg>
               </div>
-            )}
+            )} */}
+
+            {isLoading && <Loading />}
 
             {cinemaItem?.cumRapChieu?.map((item, index) => (
               <div
@@ -322,7 +328,7 @@ export default function MovieDetailPage() {
                         key={i}
                         className="px-5 py-1.5 border border-pink-500 text-black rounded hover:bg-pink-100 transition cursor-pointer"
                         onClick={() => {
-                          navigate(`/book-ticket/${itm.maLichChieu}`)
+                          navigate(`/book-ticket/${itm.maLichChieu}`);
                         }}
                       >
                         {itm.ngayChieuGioChieu &&
