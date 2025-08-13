@@ -1,25 +1,26 @@
-import React from "react";
+import { useState } from "react";
 import { useAuthStore } from "../../../../store/auth.store";
 import { useNavigate } from "react-router-dom";
 
 export default function Avatar() {
   const navigate = useNavigate();
+
+  const [isOpen, setIsOpen] = useState(false);
+
   const user = useAuthStore((state) => state.user);
   const clearUser = useAuthStore((state) => state.clearUser);
   const handleLogout = () => {
     clearUser();
     localStorage.clear();
-    navigate('/')
+    navigate("/");
   };
+
   return (
-    <div>
+    <div className="relative">
       <button
         type="button"
+        onClick={() => setIsOpen(true)}
         className="flex text-sm rounded-full md:me-0 focus:ring-4 focus:ring-pink-200 hover:cursor-pointer "
-        id="user-menu-button"
-        aria-expanded="false"
-        data-dropdown-toggle="user-dropdown"
-        data-dropdown-placement="bottom"
       >
         <span className="sr-only">Open user menu</span>
         <img
@@ -29,43 +30,36 @@ export default function Avatar() {
         />
       </button>
       {/* Dropdown menu */}
-      <div
-        className="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm "
-        id="user-dropdown"
-      >
-        <div className="px-4 py-3">
-          <span className="block text-sm text-gray-900 ">{user?.hoTen}</span>
-          <span className="block text-sm  text-gray-500 truncate ">
-            {user?.email}
-          </span>
+      {isOpen && (
+        <div
+          className="z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm absolute inset-[100%_0_auto_auto]"
+        >
+          <div className="px-4 py-3">
+            <span className="block text-sm text-gray-900 ">{user?.hoTen}</span>
+            <span className="block text-sm  text-gray-500 truncate ">
+              {user?.email}
+            </span>
+          </div>
+          <ul className="py-2">
+            <li>
+              <a
+                href="#"
+                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Thông tin
+              </a>
+            </li>
+            <li>
+              <p
+                onClick={handleLogout}
+                className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                Đăng xuất
+              </p>
+            </li>
+          </ul>
         </div>
-        <ul className="py-2" aria-labelledby="user-menu-button">
-          <li>
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Thông tin
-            </a>
-          </li>
-          {/* <li>
-            <a
-              href="#"
-              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Settings
-            </a>
-          </li> */}
-          <li>
-            <p
-              onClick={handleLogout}
-              className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-            >
-              Đăng xuất
-            </p>
-          </li>
-        </ul>
-      </div>
+      )}
     </div>
   );
 }

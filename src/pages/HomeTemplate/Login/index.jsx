@@ -1,9 +1,16 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
-import React from "react";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { getLoginApi } from "../../../service/auth.api";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../../store/auth.store";
+
+const schema = z.object({
+  taiKhoan: z.string().nonempty("Tài khoản không được để trống"),
+  matKhau: z.string().nonempty("Mật khẩu không được để trống"),
+});
 
 export default function Login() {
   const navigate = useNavigate();
@@ -11,11 +18,16 @@ export default function Login() {
   const setUser = useAuthStore((state) => state.setUser);
   const setAlert = useAuthStore((state) => state.setAlert);
 
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       taiKhoan: "",
       matKhau: "",
     },
+    resolver: zodResolver(schema),
   });
 
   const { mutate, isPending, isSuccess } = useMutation({
@@ -71,7 +83,7 @@ export default function Login() {
           >
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Tài khoản
+                Tài khoản <span className="text-red-500">*</span>
               </label>
               <input
                 type="text"
@@ -79,10 +91,15 @@ export default function Login() {
                 className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-300"
                 {...register("taiKhoan")}
               />
+              {errors.taiKhoan?.message && (
+                <p className="text-red-700 text-sm mt-1">
+                  {errors.taiKhoan?.message}
+                </p>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Mật khẩu
+                Mật khẩu <span className="text-red-500">*</span>
               </label>
               <input
                 type="password"
@@ -90,6 +107,11 @@ export default function Login() {
                 className="w-full mt-1 px-4 py-2 border rounded-md focus:outline-none focus:border-pink-500 focus:ring-1 focus:ring-pink-300"
                 {...register("matKhau")}
               />
+               {errors.matKhau?.message && (
+                <p className="text-red-700 text-sm mt-1">
+                  {errors.matKhau?.message}
+                </p>
+              )}
             </div>
 
             <div className="flex items-center justify-between text-sm text-gray-600">

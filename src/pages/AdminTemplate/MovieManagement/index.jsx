@@ -223,216 +223,222 @@ export default function MovieManagement() {
 
               <div className="p-6">
                 <form>
-                  <div className="grid gap-6 mb-6 md:grid-cols-2">
-                    <div>
-                      <label
-                        htmlFor="movie_name"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Thêm phim
-                      </label>
-                      <input
-                        type="text"
-                        id="movie_name"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Nhập tên phim..."
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="last_name"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Poster
-                      </label>
-                      <div className="flex items-center justify-center w-full">
+                  <div className="flex gap-10">
+                    <div className="left">
+                      <div>
                         <label
-                          htmlFor="dropzone-file"
-                          className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600"
+                          htmlFor="movie_name"
+                          className="block mb-2 text-sm font-medium text-gray-900 "
                         >
-                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          Thêm phim
+                        </label>
+                        <input
+                          type="text"
+                          id="movie_name"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                          placeholder="Nhập tên phim..."
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="biDanh"
+                          className="block mb-2 text-sm font-medium text-gray-900"
+                        >
+                          Bí danh
+                        </label>
+                        <input
+                          type="text"
+                          id="biDanh"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                          placeholder="Nhập Bí danh..."
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="link"
+                          className="block mb-2 text-sm font-medium text-gray-900"
+                        >
+                          Link Trailer YouTube
+                        </label>
+                        <input
+                          type="text"
+                          id="link"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 "
+                          placeholder="https://www.youtube.com/watch...."
+                          required
+                        />
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="moTa"
+                          className="block mb-2 text-sm font-medium text-gray-900 "
+                        >
+                          Mô tả
+                        </label>
+                        <textarea
+                          id="moTa"
+                          rows={4}
+                          className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+                          placeholder="Nhập mô tả nội dung phim..."
+                          // defaultValue={""}
+                        />
+                      </div>
+
+                      <div>
+                        <p className="block mb-2 text-sm font-medium text-gray-900">
+                          Ngày khởi chiếu
+                        </p>
+                        <div className="relative max-w-sm">
+                          <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                             <svg
-                              className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400"
+                              className="w-4 h-4 text-gray-500 "
                               aria-hidden="true"
                               xmlns="http://www.w3.org/2000/svg"
-                              fill="none"
-                              viewBox="0 0 20 16"
+                              fill="currentColor"
+                              viewBox="0 0 20 20"
                             >
-                              <path
-                                stroke="currentColor"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                              />
+                              <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                             </svg>
-                            <p className="mb-2 text-sm text-gray-500 dark:text-gray-400">
-                              <span className="font-semibold">
-                                Nhấp để tải ảnh
-                              </span> kéo hoặc thả
-                            </p>
-                            <p className="text-xs text-gray-500 dark:text-gray-400">
-                              SVG, PNG or JPG (MAX. 400x800px)
-                            </p>
                           </div>
                           <input
-                            id="dropzone-file"
-                            type="file"
-                            className="hidden"
+                            datepicker="true"
+                            id="default-datepicker"
+                            type="text"
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 "
+                            placeholder="mm/dd/yyyy"
                           />
-                        </label>
+                        </div>
                       </div>
                     </div>
-                    <div>
-                      <label
-                        htmlFor="last_name"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Last name
-                      </label>
-                      <input
-                        type="text"
-                        id="last_name"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Doe"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="company"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Company
-                      </label>
-                      <input
-                        type="text"
-                        id="company"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="Flowbite"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="phone"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Phone number
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="123-45-678"
-                        pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="website"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Website URL
-                      </label>
-                      <input
-                        type="url"
-                        id="website"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder="flowbite.com"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="visitors"
-                        className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                      >
-                        Unique visitors (per month)
-                      </label>
-                      <input
-                        type="number"
-                        id="visitors"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                        placeholder
-                        required
-                      />
+                    <div className="right">
+                      <div>
+                        <label
+                          htmlFor="last_name"
+                          className="block mb-2 text-sm font-medium text-gray-900 "
+                        >
+                          Poster
+                        </label>
+                        <div className="flex items-center justify-center w-full">
+                          <label
+                            htmlFor="dropzone-file"
+                            className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100 "
+                          >
+                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                              <svg
+                                className="w-8 h-8 mb-4 text-gray-500 "
+                                aria-hidden="true"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 20 16"
+                              >
+                                <path
+                                  stroke="currentColor"
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth={2}
+                                  d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                                />
+                              </svg>
+                              <p className="mb-2 text-sm text-gray-500 ">
+                                <span className="font-semibold">
+                                  Nhấp để tải ảnh
+                                </span>{" "}
+                                kéo hoặc thả
+                              </p>
+                              <p className="text-xs text-gray-500 ">
+                                SVG, PNG or JPG (MAX. 400x800px)
+                              </p>
+                            </div>
+                            <input
+                              id="dropzone-file"
+                              type="file"
+                              className="hidden"
+                            />
+                          </label>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label
+                          htmlFor="minmax-range"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Đánh giá
+                        </label>
+                        <input
+                          id="minmax-range"
+                          type="range"
+                          min={0}
+                          max={10}
+                          defaultValue={0}
+                          step={1}
+                          className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                        />
+                      </div>
+
+                      <div>
+                        <p className="block mb-2 text-sm font-medium text-gray-900 ">
+                          Trạng thái
+                        </p>
+                        <div>
+                          <div className="flex items-center mb-4">
+                            <input
+                              id="country-option-2"
+                              type="checkbox"
+                              name="hot"
+                              defaultValue="hot"
+                              className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 "
+                            />
+                            <label
+                              htmlFor="country-option-2"
+                              className="block ms-2 text-sm font-medium text-gray-900 "
+                            >
+                              Phim Hot
+                            </label>
+                          </div>
+                          <div className="flex items-center mb-4">
+                            <input
+                              id="country-option-3"
+                              type="radio"
+                              name="movieT"
+                              defaultValue="dangChieu"
+                              className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 "
+                            />
+                            <label
+                              htmlFor="country-option-3"
+                              className="block ms-2 text-sm font-medium text-gray-900 "
+                            >
+                              Đang chiếu
+                            </label>
+                          </div>
+                          <div className="flex items-center mb-4">
+                            <input
+                              id="country-option-4"
+                              type="radio"
+                              name="movieT"
+                              defaultValue="sapChieu"
+                              className="w-4 h-4 border-gray-300 focus:ring-2 focus:ring-blue-300 "
+                            />
+                            <label
+                              htmlFor="country-option-4"
+                              className="block ms-2 text-sm font-medium text-gray-900 "
+                            >
+                              Sắp chiếu
+                            </label>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="mb-6">
-                    <label
-                      htmlFor="email"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Email address
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="john.doe@company.com"
-                      required
-                    />
-                  </div>
-                  <div className="mb-6">
-                    <label
-                      htmlFor="password"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Password
-                    </label>
-                    <input
-                      type="password"
-                      id="password"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="•••••••••"
-                      required
-                    />
-                  </div>
-                  <div className="mb-6">
-                    <label
-                      htmlFor="confirm_password"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      Confirm password
-                    </label>
-                    <input
-                      type="password"
-                      id="confirm_password"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      placeholder="•••••••••"
-                      required
-                    />
-                  </div>
-                  <div className="flex items-start mb-6">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="remember"
-                        type="checkbox"
-                        defaultValue
-                        className="w-4 h-4 border border-gray-300 rounded-sm bg-gray-50 focus:ring-3 focus:ring-blue-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-blue-600 dark:ring-offset-gray-800"
-                        required
-                      />
-                    </div>
-                    <label
-                      htmlFor="remember"
-                      className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                    >
-                      I agree with the
-                      <a
-                        href="#"
-                        className="text-blue-600 hover:underline dark:text-blue-500"
-                      >
-                        terms and conditions
-                      </a>
-                      .
-                    </label>
-                  </div>
+
                   <button
                     type="submit"
-                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                    className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center "
                   >
                     Submit
                   </button>
