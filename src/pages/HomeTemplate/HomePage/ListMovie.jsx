@@ -1,13 +1,21 @@
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+
+import { getMoviePagi } from "../../../service/movie.api";
 import MovieItem from "./MovieItem";
 import PaginationCustom from "../_components/PaginationCustom";
-import { useQuery } from "@tanstack/react-query";
-import { getMoviePagi } from "../../../service/movie.api";
+import Loading from "../_components/Loading";
 
 export default function ListMovie() {
+  let [currentPage, setCurrentPage] = useState(1);
   const { data, isLoading } = useQuery({
-    queryKey: ["Movie-list"],
-    queryFn: () => getMoviePagi(10),
+    queryKey: ["Movie-list", currentPage],
+    queryFn: () => getMoviePagi(10, currentPage),
   });
+
+  const handlePage = (pagi) => {
+    setCurrentPage(pagi);
+  };
 
   return (
     <div className="relative bg-gray-50 pb-6 pt-6  md:py-14">
@@ -51,13 +59,18 @@ export default function ListMovie() {
             </div>
           </form>
         </div>
-        <div className="grid gap-3 grid-cols-2 sm:grid-cols-3 md:gap-5 md:grid-cols-4 lg:grid-cols-5 mb-5 md:mb-7">
+        <div className="min-h-[300px] grid gap-3 grid-cols-2 sm:grid-cols-3 md:gap-5 md:grid-cols-4 lg:grid-cols-5 mb-5 md:mb-7">
+          {isLoading && <Loading />}
           {data?.items?.map((item, index) => {
             return <MovieItem key={index} movie={item} />;
           })}
         </div>
 
-        <PaginationCustom />
+        <PaginationCustom
+          totalPages={data?.totalPages}
+          currentPage={data?.currentPage}
+          handlePage={handlePage}
+        />
       </div>
     </div>
   );

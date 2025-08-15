@@ -11,21 +11,29 @@ import {
   Link,
   FileText,
   CalendarFold,
+  LoaderCircle,
 } from "lucide-react";
 import { Dialog, DialogPanel, Transition } from "@headlessui/react";
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { format } from "date-fns";
+import { useForm } from "react-hook-form";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 import PaginationCustom from "../../HomeTemplate/_components/PaginationCustom";
-import { getMoviePagi } from "../../../service/movie.api";
+import {
+  deleteMovie,
+  getMoviePagi,
+  postMovie,
+} from "../../../service/movie.api";
 import Loading from "../../HomeTemplate/_components/Loading";
-import { useForm } from "react-hook-form";
-import { number } from "zod";
-import { fa } from "zod/v4/locales";
 
 export default function MovieManagement() {
   let [isOpen, setIsOpen] = useState(false);
+  let [currentPage, setCurrentPage] = useState(1);
+
+  const [selectedDate, setSelectedDate] = useState("");
   function open() {
     setIsOpen(true);
   }
@@ -33,9 +41,23 @@ export default function MovieManagement() {
     setIsOpen(false);
   }
 
+  const handlePage = (pagi) => {
+    setCurrentPage(pagi);
+  };
+
   const { data: movie, isLoading } = useQuery({
-    queryKey: ["movide-admin"],
-    queryFn: () => getMoviePagi(5),
+    queryKey: ["movide-admin", currentPage],
+    queryFn: () => getMoviePagi(5, currentPage),
+  });
+
+  // const { mutate, isPending } = useMutation({
+  //   mutationFn: (formData) => postMovie(formData),
+  //   onSuccess: () => {},
+  // });
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (id) => deleteMovie(id),
+    onSuccess: () => {},
   });
 
   const {
@@ -69,8 +91,20 @@ export default function MovieManagement() {
     return url;
   };
 
-  const onSubmit = (data) => {
-    console.log("🌲 ~ onSubmit ~ data:", data);
+  const onSubmit = (values) => {
+    const { trangThai, ...rest } = values;
+    const newValues = {
+      ...rest,
+      dangChieu: trangThai === "true",
+      sapChieu: trangThai === "false",
+    };
+
+    const formData = new FormData();
+    for (let key in newValues) {
+      formData.append(key, newValues[key]);
+    }
+
+    // mutate(formData);
   };
 
   return (
@@ -175,7 +209,12 @@ export default function MovieManagement() {
                       <div className="flex justify-center gap-3">
                         <Eye className="text-blue-500 w-5 cursor-pointer hover:text-blue-800 transition-all duration-300" />
                         <SquarePen className="text-yellow-500 w-5 cursor-pointer hover:text-yellow-800 transition-all duration-300" />
-                        <Trash2 className="text-red-500 w-5 cursor-pointer hover:text-red-800 transition-all duration-300" />
+                        <Trash2
+                          onClick={() => {
+                            mutate(item?.maPhim);
+                          }}
+                          className="text-red-500 w-5 cursor-pointer hover:text-red-800 transition-all duration-300"
+                        />
                       </div>
                     </td>
                   </tr>
@@ -185,51 +224,55 @@ export default function MovieManagement() {
           </div>
           <div className="flex items-center justify-between flex-col gap-3 lg:flex-row px-6 py-5">
             <p className="text-gray-500 text-sm text-center">
-              Hiển thị 10 phim mỗi trang{" "}
+              Hiển thị {movie?.count} phim mỗi trang{" "}
               <span className="sm:inline-block hidden">-</span>{" "}
-              <br className="sm:hidden" /> Tổng cộng 50 phim
+              <br className="sm:hidden" /> Tổng cộng {movie?.totalCount} phim
             </p>
-            <PaginationCustom />
+            <PaginationCustom
+              totalPages={movie?.totalPages}
+              currentPage={movie?.currentPage}
+              handlePage={handlePage}
+            />
           </div>
         </div>
       </div>
       <Transition show={isOpen} unmount={false}>
         <Dialog as="div" className="focus:outline-none" onClose={close}>
-          <div className="fixed z-[999] inset-0 flex w-screen items-center justify-center p-4 bg-[#0009]">
-            <div className="flex min-h-full items-center justify-center p-4">
+          <div className="fixed z-[999] inset-0 overflow-auto  bg-[#0009]">
+            <div className="w-full md:flex items-center md:h-full md:w-3xl xl:w-6xl p-4 m-auto ">
               <DialogPanel
                 transition
-                className=" w-6xl rounded-xl bg-white backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
+                className=" w-full rounded-xl bg-white backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
               >
-                <div className="relative flex items-center p-6 bg-pink-50 rounded-t-xl">
+                <div className="relative flex items-center p-3 md:p-6 bg-pink-50 rounded-t-xl">
                   <div className="w-13 h-13 rounded-lg bg-[var(--mainColor)] flex items-center justify-center text-white">
                     <Film className="w-8 h-8 duration-300 transition-all" />
                   </div>
-                  <div className="block ml-4">
-                    <p className="text-2xl font-bold text-gray-800">
+                  <div className="block ml-2 md:ml-4">
+                    <p className="text-lg md:text-2xl font-bold text-gray-800">
                       Thêm phim mới
                     </p>
-                    <p className="text-base text-gray-600">
+                    <p className="text-xs md:text-base text-gray-600">
                       Điền thông tin phim để thêm vào hệ thống
                     </p>
                   </div>
 
                   <div
                     onClick={close}
-                    className="absolute inset-y-0 right-4 h-fit my-auto cursor-pointer p-2 hover:text-[var(--mainColor)]"
+                    className="absolute top-0 right-0 md:inset-y-0 right-4 h-fit my-auto cursor-pointer p-2 hover:text-[var(--mainColor)]"
                   >
                     <X className="w-6 h-6" />
                   </div>
                 </div>
 
-                <div className="p-6">
+                <div className="p-4 md:p-6">
                   <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="flex gap-10">
-                      <div className="left w-1/2 space-y-3.5">
+                    <div className=" md:flex gap-4 md:gap-10">
+                      <div className="left md:w-1/2 space-y-1.5 md:space-y-3.5">
                         <div>
                           <label
                             htmlFor="tenPhim"
-                            className="block mb-2 text-sm font-medium text-gray-900 flex items-center gap-2 "
+                            className="block mb-1 md:mb-2 text-sm font-medium text-gray-900 flex items-center gap-2 "
                           >
                             <Film width={20} className="text-pink-500" /> Thêm
                             phim
@@ -246,7 +289,7 @@ export default function MovieManagement() {
                         <div>
                           <label
                             htmlFor="biDanh"
-                            className="block mb-2 text-sm font-medium text-gray-900 flex items-center gap-2 "
+                            className="block mb-1 md:mb-2 text-sm font-medium text-gray-900 flex items-center gap-2 "
                           >
                             <VenetianMask
                               width={20}
@@ -263,17 +306,30 @@ export default function MovieManagement() {
                           />
                         </div>
                         <div>
-                          <p className="block mb-2 text-sm font-medium text-gray-900 flex items-center gap-2">
+                          <p className="block mb-1 md:mb-2 text-sm font-medium text-gray-900 flex items-center gap-2">
                             <CalendarFold
                               width={18}
                               className="text-yellow-400"
                             />
                             Ngày khởi chiếu
                           </p>
-                          <div className="relative  z-10">
-                            <div className="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                          <DatePicker
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full"
+                            showIcon
+                            dateFormat="dd/MM/yyyy"
+                            minDate={new Date()}
+                            selected={selectedDate}
+                            placeholderText="xx/xx/xxxx"
+                            onChange={(date) => {
+                              setSelectedDate(date);
+                              setValue(
+                                "ngayKhoiChieu",
+                                format(date, "dd/MM/yyyy")
+                              );
+                            }}
+                            icon={
                               <svg
-                                className="w-4 h-4 text-gray-500 "
+                                className="w-4 h-4 text-gray-500 dark:text-gray-400"
                                 aria-hidden="true"
                                 xmlns="http://www.w3.org/2000/svg"
                                 fill="currentColor"
@@ -281,22 +337,14 @@ export default function MovieManagement() {
                               >
                                 <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                               </svg>
-                            </div>
-                            <input
-                              datepicker="true"
-                              // id="default-datepicker"
-                              type="date"
-                              // type="text"
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 "
-                              placeholder="mm/dd/yyyy"
-                              {...register("ngayKhoiChieu")}
-                            />
-                          </div>
+                            }
+                            // {...register("ngayKhoiChieu")}
+                          />
                         </div>
                         <div>
                           <label
                             htmlFor="link"
-                            className="block mb-2 text-sm font-medium text-gray-900 flex items-center gap-2"
+                            className="block mb-1 md:mb-2 text-sm font-medium text-gray-900 flex items-center gap-2"
                           >
                             <Link width={18} className="text-red-400" />
                             Link Trailer YouTube
@@ -313,7 +361,7 @@ export default function MovieManagement() {
                         <div>
                           <label
                             htmlFor="moTa"
-                            className="block mb-2 text-sm font-medium text-gray-900 flex items-center gap-2"
+                            className="block mb-1 md:mb-2 text-sm font-medium text-gray-900 flex items-center gap-2"
                           >
                             <FileText width={18} className="text-green-400" />
                             Mô tả
@@ -327,51 +375,53 @@ export default function MovieManagement() {
                           />
                         </div>
                       </div>
-                      <div className="right w-1/2 space-y-3.5">
+                      <div className="right md:w-1/2 space-y-3.5">
                         <div>
                           <label
                             htmlFor="last_name"
-                            className="block mb-2 text-sm font-medium text-gray-900 "
+                            className="block mb-1 md:mb-2 text-sm font-medium text-gray-900 "
                           >
                             Poster
                           </label>
                           <div className="flex items-center justify-center w-full relative">
                             <label
                               htmlFor="dropzone-file"
-                              className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100 "
+                              className="flex flex-col items-center justify-center w-full h-34 md:h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100 "
                             >
-                              <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                <svg
-                                  className="w-8 h-8 mb-4 text-gray-500 "
-                                  aria-hidden="true"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  fill="none"
-                                  viewBox="0 0 20 16"
-                                >
-                                  <path
-                                    stroke="currentColor"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth={2}
-                                    d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
-                                  />
-                                </svg>
-                                <p className="mb-2 text-sm text-gray-500 ">
-                                  <span className="font-semibold">
-                                    Nhấp để tải ảnh
-                                  </span>{" "}
-                                  kéo hoặc thả
-                                </p>
-                                <p className="text-xs text-gray-500 ">
-                                  SVG, PNG or JPG (MAX. 400x800px)
-                                </p>
-                              </div>
+                              {!hinhAnh && (
+                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                                  <svg
+                                    className="w-8 h-8 mb-1 md:mb-4 text-gray-500 "
+                                    aria-hidden="true"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    fill="none"
+                                    viewBox="0 0 20 16"
+                                  >
+                                    <path
+                                      stroke="currentColor"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                                    />
+                                  </svg>
+                                  <p className="mb-1 md:mb-2 text-sm text-gray-500 ">
+                                    <span className="font-semibold">
+                                      Nhấp để tải ảnh
+                                    </span>{" "}
+                                    kéo hoặc thả
+                                  </p>
+                                  <p className="text-xs text-gray-500 ">
+                                    SVG, PNG or JPG (MAX. 400x800px)
+                                  </p>
+                                </div>
+                              )}
 
                               {hinhAnh && (
                                 <img
                                   src={previewImage(hinhAnh)}
-                                  className="absolute max-h-full w-fit mx-auto inset-0 object-cover"
-                                  alt=""
+                                  className="absolute max-h-full w-fit m-auto inset-0 object-cover"
+                                  alt="poster"
                                 />
                               )}
                               <input
@@ -390,7 +440,7 @@ export default function MovieManagement() {
                         <div>
                           <label
                             htmlFor="minmax-range"
-                            className="block mb-2 text-sm font-medium text-gray-900 "
+                            className="block mb-1 md:mb-2 text-sm font-medium text-gray-900 "
                           >
                             Đánh giá
                           </label>
@@ -407,7 +457,7 @@ export default function MovieManagement() {
                         </div>
 
                         <div>
-                          <p className="block mb-2 text-sm font-medium text-gray-900 ">
+                          <p className="block mb-1 md:mb-2 text-sm font-medium text-gray-900 ">
                             Trạng thái
                           </p>
                           <div>
@@ -432,8 +482,8 @@ export default function MovieManagement() {
                                 <input
                                   id="default-radio-1"
                                   type="radio"
+                                  value="true"
                                   name="trangThai"
-                                  defaultValue
                                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                                   {...register("trangThai")}
                                 />
@@ -449,7 +499,7 @@ export default function MovieManagement() {
                                   id="default-radio-2"
                                   type="radio"
                                   name="trangThai"
-                                  defaultValue
+                                  value="false"
                                   className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
                                   {...register("trangThai")}
                                 />
@@ -473,11 +523,12 @@ export default function MovieManagement() {
                       >
                         Hủy bỏ
                       </button>
-                      <button
-                        // type="submit"
-                        className="cursor-pointer text-white bg-pink-600 hover:bg-pink-800 focus:outline-none font-medium rounded-md text-sm px-3 py-3 text-center flex gap-2 items-center"
-                      >
-                        <ArchiveRestore width={20} />
+                      <button className="cursor-pointer text-white bg-pink-600 hover:bg-pink-800 focus:outline-none font-medium rounded-md text-sm px-3 py-3 text-center flex gap-2 items-center">
+                        {isPending ? (
+                          <LoaderCircle className="animate-spin" width={20} />
+                        ) : (
+                          <ArchiveRestore width={20} />
+                        )}
                         Thêm phim mới
                       </button>
                     </div>

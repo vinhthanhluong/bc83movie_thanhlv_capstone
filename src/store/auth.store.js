@@ -1,12 +1,18 @@
 import { create } from "zustand";
 
-const userLocal = localStorage.getItem('USER') ? JSON.parse(localStorage.getItem('USER')) : null;
+const userLocal = localStorage.getItem("USER")
+  ? JSON.parse(localStorage.getItem("USER"))
+  : null;
 
 export const useAuthStore = create((set) => ({
-    user: userLocal,
-    setUser: (state) => set({ user: state }),
-    clearUser: () => set({ user: null }),
+  user: userLocal,
+  setUser: (state) => set({ user: state }),
+  clearUser: (navigate) => {
+    localStorage.clear();
+    navigate("/");
+    set({ user: null });
+  },
 
-    alert: null,
-    setAlert: (state) => set({ alert: state }),
+  alert: null,
+  setAlert: (state) => set({ alert: state }),
 }));

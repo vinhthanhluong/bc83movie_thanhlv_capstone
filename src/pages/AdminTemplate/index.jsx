@@ -1,14 +1,22 @@
-import { Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
+import { useState } from "react";
+
+import { useAuthStore } from "../../store/auth.store";
+import Avatar from "../HomeTemplate/_components/Header/Avatar";
 
 export default function AdminTemplate() {
+  const navigate = useNavigate();
+    const [isOpen, setIsOpen] = useState(false);
+  const { user, clearUser } = useAuthStore();
+
   return (
     <div>
       <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 ">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">
             <div className="flex items-center justify-start rtl:justify-end">
-              <a href="#" className="flex ms-2 md:me-24">
+              <Link to="/" className="flex ms-2 md:me-24">
                 <img
                   src="https://flowbite.com/docs/images/logo.svg"
                   className="h-8 me-3"
@@ -17,71 +25,11 @@ export default function AdminTemplate() {
                 <span className="self-center text-xl font-semibold md:text-2xl whitespace-nowrap ">
                   CycberMovie
                 </span>
-              </a>
+              </Link>
             </div>
             <div className="flex items-center">
-              <div className="flex items-center">
-                <div>
-                  <button
-                    type="button"
-                    className="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 "
-                    aria-expanded="false"
-                    data-dropdown-toggle="dropdown-user"
-                  >
-                    <span className="sr-only">Open user menu</span>
-                    <img
-                      className="w-8 h-8 rounded-full"
-                      src="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                      alt="user photo"
-                    />
-                  </button>
-                </div>
-                <div
-                  className="z-50 w-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded-sm shadow-sm "
-                  id="dropdown-user"
-                >
-                  <div className="px-4 py-3" role="none">
-                    <p className="text-sm text-gray-900 " role="none">
-                      Neil Sims
-                    </p>
-                    <p
-                      className="text-sm font-medium text-gray-900 truncate "
-                      role="none"
-                    >
-                      neil.sims@flowbite.com
-                    </p>
-                  </div>
-                  <ul className="py-1" role="none">
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-                        role="menuitem"
-                      >
-                        Bảng điều khiển
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-                        role="menuitem"
-                      >
-                        Cài đặt
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        href="#"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 "
-                        role="menuitem"
-                      >
-                        Đăng xuất
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
+              <Avatar />
+
               <button
                 data-drawer-target="logo-sidebar"
                 data-drawer-toggle="logo-sidebar"
@@ -260,7 +208,6 @@ export default function AdminTemplate() {
           </ul>
         </div>
       </aside>
-      {/* md:w-54 lg:w-64 */}
       <div className="p-4 md:ml-54 lg:ml-64 h-full mt-16 md:mt-14">
         <Outlet />
       </div>

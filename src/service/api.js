@@ -7,7 +7,7 @@ const api = axios.create({
 
 api.interceptors.request.use((config) => {
   const userLocal = localStorage.getItem("USER");
-  const userToken = userLocal ? JSON.parse(userLocal) : null;
+  const userToken = userLocal ? JSON.parse(userLocal).accessToken : null;
 
   return {
     ...config,

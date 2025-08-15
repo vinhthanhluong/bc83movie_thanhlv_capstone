@@ -22,16 +22,24 @@ export const getMoviePagi = async (numItem = 10, numPagi = 1) => {
   }
 };
 
-// export const getMovieDetail = async (movieId) => {
-//   try {
-//     const response = await api.get(`/QuanLyPhim/LayThongTinPhim`, {
-//       params: {
-//         MaPhim: movieId,
-//       },
-//     });
-//     return response.data.content;
-//   } catch (error) {
-//     console.log("🌲 ~ getMovieDetail ~ error:", error);
-//     throw error;
-//   }
-// };
+export const postMovie = async (data) => {
+  try {
+    const response = await api.post(`/QuanLyPhim/ThemPhimUploadHinh`, data);
+    return response.data.content;
+  } catch (error) {
+    console.log("🌲 ~ postMovie ~ error:", error);
+    throw error;
+  }
+};
+
+export const deleteMovie = async (id) => {
+  try {
+    const response = await api.delete(`/QuanLyPhim/XoaPhim`, {
+      data: { MaPhim: id },
+    });
+    return response.data.content;
+  } catch (error) {
+    console.log("🌲 ~ deleteMovie ~ error:", error);
+    throw error;
+  }
+};
