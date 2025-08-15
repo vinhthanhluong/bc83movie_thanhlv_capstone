@@ -6,14 +6,7 @@ export default function Avatar() {
   const navigate = useNavigate();
 
   const [isOpen, setIsOpen] = useState(false);
-
-  const user = useAuthStore((state) => state.user);
-  const clearUser = useAuthStore((state) => state.clearUser);
-  const handleLogout = () => {
-    clearUser();
-    localStorage.clear();
-    navigate("/");
-  };
+  const { user, clearUser } = useAuthStore();
 
   return (
     <div className="relative">
@@ -31,9 +24,7 @@ export default function Avatar() {
       </button>
       {/* Dropdown menu */}
       {isOpen && (
-        <div
-          className="z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm absolute inset-[100%_0_auto_auto]"
-        >
+        <div className="z-50 text-base list-none bg-white divide-y divide-gray-100 rounded-lg shadow-sm absolute inset-[100%_0_auto_auto]">
           <div className="px-4 py-3">
             <span className="block text-sm text-gray-900 ">{user?.hoTen}</span>
             <span className="block text-sm  text-gray-500 truncate ">
@@ -41,17 +32,21 @@ export default function Avatar() {
             </span>
           </div>
           <ul className="py-2">
+            {user?.maLoaiNguoiDung === "QuanTri" && (
+              <li onClick={() => navigate("/admin/dashboard")}>
+                <p className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 ">
+                  Bảng điều khiển
+                </p>
+              </li>
+            )}
             <li>
-              <a
-                href="#"
-                className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-              >
+              <p className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                 Thông tin
-              </a>
+              </p>
             </li>
             <li>
               <p
-                onClick={handleLogout}
+                onClick={() => clearUser(navigate)}
                 className="cursor-pointer block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
               >
                 Đăng xuất

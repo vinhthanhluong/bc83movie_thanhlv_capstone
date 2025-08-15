@@ -107,3 +107,18 @@
     z-index: 1;
     pointer-events: none;
 }
+
+.react-datepicker-wrapper{
+    width: 100%;
+}
+
+.react-datepicker-wrapper .react-datepicker__view-calendar-icon input{
+    padding: calc(var(--spacing) * 2.5);
+    padding-left: 35px;
+}
+
+.react-datepicker__input-container .react-datepicker__calendar-icon{
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+}

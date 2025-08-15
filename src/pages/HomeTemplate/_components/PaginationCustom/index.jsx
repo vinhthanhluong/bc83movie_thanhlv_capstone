@@ -1,13 +1,29 @@
 import React from "react";
 
-export default function PaginationCustom() {
+export default function PaginationCustom({
+  totalPages,
+  currentPage,
+  handlePage,
+}) {
+  const handleArrow = (num) => {
+    if (num == 1 && currentPage < totalPages) {
+      handlePage(currentPage + num);
+    }
+
+    if (num == -1 && currentPage >= 2) {
+      handlePage(currentPage + num);
+    }
+  };
+
   return (
     <ul className="pagination flex flex-nowrap items-center justify-center space-x-2 text-sm">
-      <li className="pagination-prev pagination-disable">
-        <button
-          className="flex h-8 w-8 select-none items-center justify-center rounded border border-gray-300 bg-gray-100 text-gray-700 focus:outline-none"
-          disabled
-        >
+      <li
+        onClick={() => handleArrow(-1)}
+        className={`pagination-prev  ${
+          currentPage == 1 ? "opacity-50 pointer-events-none" : ""
+        }`}
+      >
+        <button className="flex h-8 w-8 cursor-pointer hover:bg-white hover:shadow-sm hover:font-bold select-none items-center justify-center rounded border border-gray-300 bg-gray-100 text-gray-700 focus:outline-none">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="h-4 w-4"
@@ -24,32 +40,42 @@ export default function PaginationCustom() {
           </svg>
         </button>
       </li>
+
       <li className="pagination-active">
         <button className="hover:bg-white hover:shadow-sm hover:font-bold cursor-pointer flex h-8 w-8 select-none items-center justify-center rounded border border-gray-300 bg-gray-100 text-gray-700  focus:outline-none ">
-          1
+          {currentPage}
         </button>
       </li>
-      <li>
-        <button className="hover:bg-white hover:shadow-sm hover:font-bold cursor-pointer flex h-8 w-8 select-none items-center justify-center rounded border border-gray-300 bg-gray-100 text-gray-700  focus:outline-none ">
-          2
-        </button>
-      </li>
-      <li>
-        <button className="hover:bg-white hover:shadow-sm hover:font-bold cursor-pointer flex h-8 w-8 select-none items-center justify-center rounded border border-gray-300 bg-gray-100 text-gray-700  focus:outline-none ">
-          3
-        </button>
-      </li>
-      <li>
-        <button className="hover:bg-white hover:shadow-sm hover:font-bold cursor-pointer flex h-8 w-8 select-none items-center justify-center rounded border border-gray-300 bg-gray-100 text-gray-500 shadow-sm focus:outline-none">
-          ...
-        </button>
-      </li>
-      <li>
-        <button className="hover:bg-white hover:shadow-sm hover:font-bold cursor-pointer flex h-8 w-8 select-none items-center justify-center rounded border border-gray-300 bg-gray-100 text-gray-700  focus:outline-none ">
-          15
-        </button>
-      </li>
-      <li className="pagination-next" aria-disabled="false">
+      {currentPage !== totalPages && (
+        <li onClick={() => handleArrow(1)}>
+          <button className="hover:bg-white hover:shadow-sm hover:font-bold cursor-pointer flex h-8 w-8 select-none items-center justify-center rounded border border-gray-300 bg-gray-100 text-gray-700  focus:outline-none ">
+            {currentPage + 1}
+          </button>
+        </li>
+      )}
+
+      {currentPage !== totalPages - 1 && currentPage !== totalPages && (
+        <li>
+          <button className="flex h-5 w-5 select-none items-center justify-center text-gray-500 focus:outline-none">
+            ...
+          </button>
+        </li>
+      )}
+
+      {currentPage !== totalPages - 1 && currentPage !== totalPages && (
+        <li onClick={() => handlePage(totalPages)}>
+          <button className="hover:bg-white hover:shadow-sm hover:font-bold cursor-pointer flex h-8 w-8 select-none items-center justify-center rounded border border-gray-300 bg-gray-100 text-gray-700  focus:outline-none ">
+            {totalPages}
+          </button>
+        </li>
+      )}
+
+      <li
+        onClick={() => handleArrow(1)}
+        className={`pagination-next  ${
+          currentPage >= totalPages - 1 ? "opacity-50 pointer-events-none" : ""
+        }`}
+      >
         <button className="hover:bg-white hover:shadow-sm hover:font-bold cursor-pointer flex h-8 w-8 select-none items-center justify-center rounded border border-gray-300 bg-gray-100 text-gray-700 shadow-sm focus:outline-none">
           <svg
             xmlns="http://www.w3.org/2000/svg"
