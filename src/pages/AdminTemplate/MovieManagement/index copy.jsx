@@ -16,7 +16,7 @@ import {
   User,
 } from "lucide-react";
 import { Dialog, DialogPanel, Transition } from "@headlessui/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { format } from "date-fns";
 import { useForm } from "react-hook-form";
 import DatePicker from "react-datepicker";
@@ -27,7 +27,6 @@ import {
   useDeleteMovie,
   useGetMovieAdmin,
   useGetMovieDetail,
-  useUpDateMovie,
 } from "../../../hooks/useMovieQuery";
 import { confirmDialog } from "../../../utils/dialog";
 
@@ -50,14 +49,13 @@ export default function MovieManagement() {
   // getMovieDetail
   const { data: movieDetail = {}, isLoading: isLoadingDetail } =
     useGetMovieDetail(idDetail);
+  console.log("🌲 ~ MovieManagement ~ movieDetail:", movieDetail);
   // getMovie
   const { data: movie, isLoading } = useGetMovieAdmin(currentPage);
   // addMovie
   const { mutate: createMovie, isPending: createIsPending } = useCreateMovie();
   // deleteMovie
   const { mutate: deleteMovie } = useDeleteMovie();
-  // updateMovie
-  const { mutate: updateMovie, isPending: updateIsPending } = useUpDateMovie();
 
   const handlePage = (pagi) => {
     setCurrentPage(pagi);
@@ -84,7 +82,6 @@ export default function MovieManagement() {
     handleSubmit,
     setValue,
     watch,
-    reset,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -105,18 +102,13 @@ export default function MovieManagement() {
   });
 
   const hinhAnh = watch("hinhAnh");
-  const previewImage = () => {
-    if (hinhAnh) {
-      return URL.createObjectURL(hinhAnh);
-    }
-    if (movieDetail?.hinhAnh) {
-      return movieDetail.hinhAnh;
-    }
-    return null;
+  const previewImage = (file) => {
+    if (!file) return;
+    const url = URL.createObjectURL(file);
+    return url;
   };
 
   const onSubmit = (values) => {
-    console.log("🌲 ~ onSubmit ~ values:", values);
     const { trangThai, ...rest } = values;
     const newValues = {
       ...rest,
@@ -128,46 +120,13 @@ export default function MovieManagement() {
     for (let key in newValues) {
       formData.append(key, newValues[key]);
     }
-    if (values.maPhim) {
-      updateMovie(formData, {
-        onSuccess: () => {
-          reset();
-          setSelectedDate("");
-          close();
-          setIdDetail(null);
-        },
-      });
-    } else {
-      createMovie(formData, {
-        onSuccess: () => {
-          reset();
-          setSelectedDate("");
-          close();
-        },
-      });
-    }
-  };
 
-  useEffect(() => {
-    if (!movieDetail) return;
-    const ngayKhoiChieuDate = movieDetail.ngayKhoiChieu
-      ? new Date(movieDetail.ngayKhoiChieu)
-      : null;
-
-    setSelectedDate(ngayKhoiChieuDate);
-
-    reset({
-      maPhim: movieDetail.maPhim,
-      tenPhim: movieDetail.tenPhim,
-      biDanh: movieDetail.biDanh,
-      trailer: movieDetail.trailer,
-      moTa: movieDetail.moTa,
-      danhGia: movieDetail.danhGia,
-      hot: movieDetail.hot,
-      trangThai: movieDetail.dangChieu ? "true" : "false",
-      // ngayKhoiChieu: movieDetail.ngayKhoiChieu,
+    createMovie(formData, {
+      onSuccess: () => {
+        close();
+      },
     });
-  }, [idDetail, movieDetail?.maPhim, reset]);
+  };
 
   return (
     <>
@@ -276,13 +235,7 @@ export default function MovieManagement() {
                           }}
                           className="text-blue-500 w-5 cursor-pointer hover:text-blue-800 transition-all duration-300"
                         />
-                        <SquarePen
-                          onClick={() => {
-                            setIsOpen(true);
-                            setIdDetail(item?.maPhim);
-                          }}
-                          className="text-yellow-500 w-5 cursor-pointer hover:text-yellow-800 transition-all duration-300"
-                        />
+                        <SquarePen className="text-yellow-500 w-5 cursor-pointer hover:text-yellow-800 transition-all duration-300" />
                         <Trash2
                           onClick={() => {
                             handleDelete(item?.maPhim);
@@ -310,14 +263,13 @@ export default function MovieManagement() {
           </div>
         </div>
       </div>
-
       <Transition show={isOpen} unmount={false}>
         <Dialog as="div" className="focus:outline-none" onClose={close}>
-          <div className="fixed z-[999] p-4 inset-0 flex items-center bg-[#0009]">
-            <div className="w-full md:w-3xl xl:w-6xl m-auto">
+          <div className="fixed z-[999] inset-0 overflow-auto  bg-[#0009]">
+            <div className="w-full md:flex items-center md:h-full md:w-3xl xl:w-6xl p-4 m-auto ">
               <DialogPanel
                 transition
-                className="w-full bg-white rounded-xl backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
+                className=" w-full rounded-xl bg-white backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
               >
                 <div className="relative flex items-center p-3 md:p-6 bg-pink-50 rounded-t-xl">
                   <div className="w-13 h-13 rounded-lg bg-[var(--mainColor)] flex items-center justify-center text-white">
@@ -327,21 +279,21 @@ export default function MovieManagement() {
                     <p className="text-lg md:text-2xl font-bold text-gray-800">
                       Thêm phim mới
                     </p>
+                    <p className="text-xs md:text-base text-gray-600">
+                      Điền thông tin phim để thêm vào hệ thống
+                    </p>
                   </div>
 
                   <div
                     onClick={close}
-                    className="absolute inset-y-0 right-4 h-fit my-auto cursor-pointer p-2 hover:text-[var(--mainColor)]"
+                    className="absolute top-0 right-0 md:inset-y-0 right-4 h-fit my-auto cursor-pointer p-2 hover:text-[var(--mainColor)]"
                   >
                     <X className="w-6 h-6" />
                   </div>
                 </div>
 
-                <div className="p-4 md:p-6 max-h-[70vh] overflow-y-auto">
-                  <form
-                    onSubmit={handleSubmit(onSubmit)}
-                    className="min-h-[60vh]"
-                  >
+                <div className="p-4 md:p-6">
+                  <form onSubmit={handleSubmit(onSubmit)}>
                     <div className=" md:flex gap-4 md:gap-10">
                       <div className="left md:w-1/2 space-y-1.5 md:space-y-3.5">
                         <div>
@@ -413,6 +365,7 @@ export default function MovieManagement() {
                                 <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z" />
                               </svg>
                             }
+                            // {...register("ngayKhoiChieu")}
                           />
                         </div>
                         <div>
@@ -462,7 +415,7 @@ export default function MovieManagement() {
                               htmlFor="dropzone-file"
                               className="flex flex-col items-center justify-center w-full h-34 md:h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50  hover:bg-gray-100 "
                             >
-                              {!previewImage() && (
+                              {!hinhAnh && (
                                 <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                   <svg
                                     className="w-8 h-8 mb-1 md:mb-4 text-gray-500 "
@@ -491,9 +444,9 @@ export default function MovieManagement() {
                                 </div>
                               )}
 
-                              {previewImage() && (
+                              {hinhAnh && (
                                 <img
-                                  src={previewImage()}
+                                  src={previewImage(hinhAnh)}
                                   className="absolute max-h-full w-fit m-auto inset-0 object-cover"
                                   alt="poster"
                                 />
@@ -616,11 +569,11 @@ export default function MovieManagement() {
 
       <Transition show={isOpenDetail} unmount={false}>
         <Dialog as="div" className="focus:outline-none" onClose={closeDetail}>
-          <div className="fixed z-[999] p-4 inset-0 flex items-center bg-[#0009]">
-            <div className="w-full md:w-3xl xl:w-6xl m-auto">
+          <div className="fixed z-[999] p-4 inset-0 flex items-center   bg-[#0009]">
+            <div className="w-full  md:w-3xl xl:w-6xl  m-auto ">
               <DialogPanel
                 transition
-                className="w-full bg-white rounded-xl backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
+                className=" w-full bg-white rounded-xl backdrop-blur-2xl duration-300 ease-out data-closed:transform-[scale(95%)] data-closed:opacity-0"
               >
                 <div className="relative flex items-center p-3 md:p-6 bg-pink-50 rounded-t-xl">
                   <div className="w-13 h-13 rounded-lg bg-[var(--mainColor)] flex items-center justify-center text-white">
@@ -641,7 +594,7 @@ export default function MovieManagement() {
                 </div>
 
                 <div className="p-4 md:p-6 max-h-[70vh] overflow-y-auto ">
-                  <div className="w-full min-h-[60vh]">
+                  <div className="w-full min-h-[60vh] ">
                     <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                       <div className="lg:col-span-1">
                         <div className="aspect-[3/4] max-w-sm md:max-w-auto mx-auto bg-gray-200 rounded-lg overflow-hidden shadow-lg">
@@ -711,7 +664,7 @@ export default function MovieManagement() {
                           <h3 className="text-lg font-semibold text-gray-900">
                             Mô tả
                           </h3>
-                          <p className="text-gray-700 leading-relaxed break-all">
+                          <p className="text-gray-700 leading-relaxed">
                             {movieDetail.moTa}
                           </p>
                         </div>
