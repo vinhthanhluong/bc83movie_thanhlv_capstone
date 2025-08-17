@@ -1,6 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-import { addMovie, deleteMovie, getMovieDetail, getMoviePagi, updateMovie } from "../service/movie.api";
+import {
+  addMovie,
+  deleteMovie,
+  getMovieDetail,
+  getMoviePagi,
+  updateMovie,
+} from "../service/movie.api";
 import { showDialog } from "../utils/dialog";
 
 export const useGetMovieDetail = (idMovie, optional = {}) =>
