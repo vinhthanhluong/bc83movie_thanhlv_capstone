@@ -33,19 +33,26 @@ import { confirmDialog } from "../../../utils/dialog";
 
 import PaginationCustom from "../../HomeTemplate/_components/PaginationCustom";
 import Loading from "../../HomeTemplate/_components/Loading";
+import { useQuery } from "@tanstack/react-query";
 
 export default function MovieManagement() {
   let [isOpen, setIsOpen] = useState(false);
   let [isOpenDetail, setIsOpenDetail] = useState(false);
+
   let [currentPage, setCurrentPage] = useState(1);
   let [idDetail, setIdDetail] = useState(null);
   const [selectedDate, setSelectedDate] = useState("");
 
   const open = () => setIsOpen(true);
   const close = () => setIsOpen(false);
-
   const openDetail = () => setIsOpenDetail(true);
   const closeDetail = () => setIsOpenDetail(false);
+
+  // const { data, isLoading: asd } = useQuery({
+  //   queryKey: ["asdasd"],
+  //   queryFn: () => getMoviePagi(5, 1),
+  // });
+
 
   // getMovieDetail
   const { data: movieDetail = {}, isLoading: isLoadingDetail } =
