@@ -44,7 +44,7 @@ export default function PopupMovie({ movie }) {
                 className="absolute inset-0 object-cover w-full h-full"
                 width="560"
                 height="315"
-                src={`https://www.youtube.com/embed/${linkYoutube}?si=Bcv6CYDRjkYWQt1k`}
+                src={movie?.trailer.replace("watch?v=" , "embed/")}
                 title="YouTube video player"
                 frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

@@ -24,10 +24,13 @@ import {
   useDeleteUser,
   // useGetDetailUser,
   useGetListUser,
+  useGetSearchUser,
+  useGetTypeUser,
   useUpdateUser,
 } from "../../../hooks/useUserQuery";
 import { useForm } from "react-hook-form";
 import { confirmDialog } from "../../../utils/dialog";
+import useDebounce from "../../../hooks/useDebounce";
 
 export default function UserManagement() {
   const [detailUser, setDetailUser] = useState(null);
@@ -45,10 +48,13 @@ export default function UserManagement() {
   };
 
   const { data: listUser = {}, isLoading } = useGetListUser(5, currentPage);
+  const { data: typeUser = [], isLoading: isLoadingType } = useGetTypeUser();
 
   const { mutate: mutateAdd, isPending: isPendingAdd } = useAddUser();
   const { mutate: mutateDelete, isPending: isPendingDelete } = useDeleteUser();
   const { mutate: mutateUpdate, isPending: isPendingUpdate } = useUpdateUser();
+  const { mutate: mutateSearch, isPending: isPendingSearch } =
+    useGetSearchUser();
 
   const {
     register,
@@ -67,6 +73,19 @@ export default function UserManagement() {
     },
   });
 
+  const { register: registerFilter, watch: watchFilter } = useForm({
+    defaultValues: {
+      keyword: "",
+    },
+  });
+  const keyword = watchFilter("keyword");
+  const debounceKeyword = useDebounce(keyword, 500);
+  
+  useEffect(() => {
+    console.log("🌲 ~ UserManagement ~ debounceKeyword:", debounceKeyword)
+    // mutateSearch(debounceKeyword);
+  }, [debounceKeyword]);
+
   const onSubmit = (data) => {
     if (detailUser) {
       mutateUpdate(data, {
@@ -75,7 +94,6 @@ export default function UserManagement() {
           reset();
         },
       });
-      console.log("update");
     } else {
       mutateAdd(data, {
         onSuccess: () => {
@@ -83,7 +101,6 @@ export default function UserManagement() {
           reset();
         },
       });
-      console.log('add');
     }
   };
 
@@ -132,12 +149,21 @@ export default function UserManagement() {
                 type="text"
                 className="w-xs bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-400 focus:border-pink-400 block  p-2.5"
                 placeholder="Tìm người dùng"
+                {...registerFilter("keyword")}
               />
 
-              <select className="w-[180px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500">
-                <option defaultValue="z">Tất cả</option>
-                <option defaultValue="x">Canada</option>
-                <option defaultValue="c">France</option>
+              <select
+                className="w-[180px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                defaultValue=""
+              >
+                <option value="">Tất cả</option>
+                {typeUser.map((item, index) => {
+                  return (
+                    <option key={index} value={item.maLoaiNguoiDung}>
+                      {item.tenLoai}
+                    </option>
+                  );
+                })}
               </select>
             </div>
           </div>
@@ -369,8 +395,18 @@ export default function UserManagement() {
                               {...register("maLoaiNguoiDung")}
                             >
                               <option value="">Chọn tài khoản</option>
-                              <option value="QuanTri">Quản trị</option>
-                              <option value="KhachHang">Khách hàng</option>
+                              {/* <option value="QuanTri">Quản trị</option>
+                              <option value="KhachHang">Khách hàng</option> */}
+                              {typeUser.map((item, index) => {
+                                return (
+                                  <option
+                                    key={index}
+                                    value={item.maLoaiNguoiDung}
+                                  >
+                                    {item.tenLoai}
+                                  </option>
+                                );
+                              })}
                             </select>
                           </div>
                         </div>

@@ -674,7 +674,8 @@ export default function MovieManagement() {
                           </h3>
                           <div className="aspect-video bg-gray-200 rounded-lg overflow-hidden">
                             <iframe
-                              src={`https://www.youtube.com/embed/${linkYoutube}?si=Bcv6CYDRjkYWQt1k`}
+                              // src={`https://www.youtube.com/embed/${linkYoutube}?si=Bcv6CYDRjkYWQt1k`}
+                              src={movieDetail?.trailer.replace("watch?v=" , "embed/")}
                               title="Movie Trailer"
                               className="w-full h-full"
                               frameBorder={0}
