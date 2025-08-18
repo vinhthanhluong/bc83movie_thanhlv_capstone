@@ -2,7 +2,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
   addUserApi,
   deleteUserApi,
-//   getDetailUserApi,
+  getSearchUserApi,
+  getTypeUserApi,
+  //   getDetailUserApi,
   getUserApi,
   updateUserApi,
 } from "../service/user.api";
@@ -15,6 +17,12 @@ export const useGetListUser = (numItem, numPagi, optional) =>
     ...optional,
   });
 
+export const useGetTypeUser = (optional) =>
+  useQuery({
+    queryKey: ["type-user"],
+    queryFn: () => getTypeUserApi(),
+    ...optional,
+  });
 
 // export const useGetDetailUser = (optional) => {
 //   return useMutation({
@@ -81,14 +89,28 @@ export const useUpdateUser = (optional) => {
         title: "Sửa người dùng thành công",
       });
       queryClient.invalidateQueries({
-        queryKey: ["list-user"]
-      })
+        queryKey: ["list-user"],
+      });
     },
     onError: (error) => {
       showDialog({
         title: "Sửa người dùng thất bại",
         text: error?.response?.data?.content,
         icon: "error",
+      });
+    },
+    ...optional,
+  });
+};
+
+export const useGetSearchUser = (optional) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: getSearchUserApi,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["list-user"],
       });
     },
     ...optional,

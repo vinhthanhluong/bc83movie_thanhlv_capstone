@@ -19,3 +19,4 @@ export const getRegisterApi = async (data) => {
     throw error;
   }
 };
+
