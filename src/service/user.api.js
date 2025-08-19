@@ -68,7 +68,7 @@ export const updateUserApi = async (data) => {
 
 export const getSearchUserApi = async (key) => {
   try {
-    const response = await api.post(`QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${key}`);
+    const response = await api.get(`QuanLyNguoiDung/TimKiemNguoiDung?MaNhom=GP01&tuKhoa=${key}`);
     return response.data.content;
   } catch (error) {
     console.log("🌲 ~ getSearchUserApi ~ error:", error);

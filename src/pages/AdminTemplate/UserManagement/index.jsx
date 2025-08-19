@@ -33,29 +33,35 @@ import { confirmDialog } from "../../../utils/dialog";
 import useDebounce from "../../../hooks/useDebounce";
 
 export default function UserManagement() {
+  // --- State ---
   const [detailUser, setDetailUser] = useState(null);
-
+  const [listUserCustom, setListUserCustom] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+
+  // --- Modal handlers ---
   const open = () => setIsOpen(true);
   const close = () => {
     setIsOpen(false);
     setDetailUser(null);
+    reset();
   };
 
-  const handlePage = (pagi) => {
-    setCurrentPage(pagi);
-  };
+  // --- Pagination ---
+  const handlePage = (pagi) => setCurrentPage(pagi);
 
-  const { data: listUser = {}, isLoading } = useGetListUser(5, currentPage);
-  const { data: typeUser = [], isLoading: isLoadingType } = useGetTypeUser();
+  // --- Filter form ---
+  const { register: registerFilter, watch: watchFilter } = useForm({
+    defaultValues: {
+      keyword: "",
+      typeUserSelect: "",
+    },
+  });
+  const keyword = watchFilter("keyword");
+  const debounceKeyword = useDebounce(keyword, 500);
+  const typeUserSelect = watchFilter("typeUserSelect");
 
-  const { mutate: mutateAdd, isPending: isPendingAdd } = useAddUser();
-  const { mutate: mutateDelete, isPending: isPendingDelete } = useDeleteUser();
-  const { mutate: mutateUpdate, isPending: isPendingUpdate } = useUpdateUser();
-  const { mutate: mutateSearch, isPending: isPendingSearch } =
-    useGetSearchUser();
-
+  // --- User form (add/edit) ---
   const {
     register,
     handleSubmit,
@@ -73,19 +79,46 @@ export default function UserManagement() {
     },
   });
 
-  const { register: registerFilter, watch: watchFilter } = useForm({
-    defaultValues: {
-      keyword: "",
-    },
-  });
-  const keyword = watchFilter("keyword");
-  const debounceKeyword = useDebounce(keyword, 500);
-  
-  useEffect(() => {
-    console.log("🌲 ~ UserManagement ~ debounceKeyword:", debounceKeyword)
-    // mutateSearch(debounceKeyword);
-  }, [debounceKeyword]);
+  // --- API hooks ---
+  const { data: listUser = {}, isLoading } = useGetListUser(5, currentPage);
+  const { data: typeUser = [], isLoading: isLoadingType } = useGetTypeUser();
+  const { data: dataSearch = [], isLoading: isLoadingSearch } =
+    useGetSearchUser(debounceKeyword);
+  const { mutate: mutateAdd, isPending: isPendingAdd } = useAddUser();
+  const { mutate: mutateDelete, isPending: isPendingDelete } = useDeleteUser();
+  const { mutate: mutateUpdate, isPending: isPendingUpdate } = useUpdateUser();
 
+  // --- Effect: Type,Search user ---
+  useEffect(() => {
+    let source = [];
+
+    if (debounceKeyword) {
+      source = dataSearch || [];
+    } else {
+      source = listUser?.items || [];
+    }
+
+    if (typeUserSelect) {
+      source = source.filter((item) => item.maLoaiNguoiDung === typeUserSelect);
+    }
+
+    setListUserCustom(source);
+  }, [listUser, dataSearch, debounceKeyword, typeUserSelect]);
+
+  // --- Effect: fill form when click detailUser ---
+  useEffect(() => {
+    reset({
+      maNhom: detailUser?.maNhom,
+      taiKhoan: detailUser?.taiKhoan,
+      matKhau: detailUser?.matKhau,
+      email: detailUser?.email,
+      soDt: detailUser?.soDt,
+      maLoaiNguoiDung: detailUser?.maLoaiNguoiDung,
+      hoTen: detailUser?.hoTen,
+    });
+  }, [detailUser]);
+
+  // --- Handlers ---
   const onSubmit = (data) => {
     if (detailUser) {
       mutateUpdate(data, {
@@ -95,6 +128,7 @@ export default function UserManagement() {
         },
       });
     } else {
+      console.log(data);
       mutateAdd(data, {
         onSuccess: () => {
           close();
@@ -109,18 +143,6 @@ export default function UserManagement() {
     const newsUser = listUser?.items?.find((u) => u.taiKhoan === ur);
     setDetailUser(newsUser);
   };
-
-  useEffect(() => {
-    reset({
-      maNhom: detailUser?.maNhom,
-      taiKhoan: detailUser?.taiKhoan,
-      matKhau: detailUser?.matKhau,
-      email: detailUser?.email,
-      soDt: detailUser?.soDt,
-      maLoaiNguoiDung: detailUser?.maLoaiNguoiDung,
-      hoTen: detailUser?.hoTen,
-    });
-  }, [detailUser]);
 
   const handleDelete = (taiKhoan) => {
     confirmDialog({
@@ -155,6 +177,7 @@ export default function UserManagement() {
               <select
                 className="w-[180px] bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 defaultValue=""
+                {...registerFilter("typeUserSelect")}
               >
                 <option value="">Tất cả</option>
                 {typeUser.map((item, index) => {
@@ -205,55 +228,68 @@ export default function UserManagement() {
                 </tr>
               </thead>
               <tbody>
-                {listUser?.items?.map((item, index) => (
-                  <tr
-                    key={index}
-                    className="bg-white border-b border-gray-200 hover:bg-gray-50 "
-                  >
-                    <td className="px-3 py-4 pr-2">{item.hoTen}</td>
-                    <td className="px-3 py-4 font-medium text-gray-900 ">
-                      {item.taiKhoan}
-                    </td>
-                    <td className="px-3 py-4">{item.matKhau}</td>
-                    <td className="px-3 py-4">{item.email}</td>
-                    <td className="px-3 py-4">{item.soDt}</td>
-                    <td className="px-3 py-4">
-                      {item.maLoaiNguoiDung === "QuanTri"
-                        ? "Quản trị"
-                        : "Khách hàng"}
-                    </td>
+                {listUserCustom?.length > 0 ? (
+                  listUserCustom?.map((item, index) => (
+                    <tr
+                      key={index}
+                      className="bg-white border-b border-gray-200 hover:bg-gray-50 "
+                    >
+                      <td className="px-3 py-4 pr-2">{item.hoTen}</td>
+                      <td className="px-3 py-4 font-medium text-gray-900 ">
+                        {item.taiKhoan}
+                      </td>
+                      <td className="px-3 py-4">{item.matKhau}</td>
+                      <td className="px-3 py-4">{item.email}</td>
+                      <td className="px-3 py-4">{item.soDt}</td>
+                      <td className="px-3 py-4">
+                        {item.maLoaiNguoiDung === "QuanTri"
+                          ? "Quản trị"
+                          : "Khách hàng"}
+                      </td>
 
-                    <td className="px-3 py-4 text-right">
-                      <div className="flex gap-3">
-                        <SquarePen
-                          onClick={() => handleDetailUser(item.taiKhoan)}
-                          className="text-yellow-500 w-5 cursor-pointer hover:text-yellow-800 transition-all duration-300"
-                        />
-                        <Trash2
-                          onClick={() => {
-                            handleDelete(item.taiKhoan);
-                          }}
-                          className="text-red-500 w-5 cursor-pointer hover:text-red-800 transition-all duration-300"
-                        />
-                      </div>
+                      <td className="px-3 py-4 text-right">
+                        <div className="flex gap-3">
+                          <SquarePen
+                            onClick={() => handleDetailUser(item.taiKhoan)}
+                            className="text-yellow-500 w-5 cursor-pointer hover:text-yellow-800 transition-all duration-300"
+                          />
+                          <Trash2
+                            onClick={() => {
+                              handleDelete(item.taiKhoan);
+                            }}
+                            className="text-red-500 w-5 cursor-pointer hover:text-red-800 transition-all duration-300"
+                          />
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={7} className="text-center p-5 text-gray-400">
+                      {debounceKeyword
+                        ? `Không tìm thấy kết quả cho "${debounceKeyword}"`
+                        : "Không có dữ liệu"}
                     </td>
                   </tr>
-                ))}
+                )}
               </tbody>
             </table>
+            {isLoadingSearch && <Loading />}
           </div>
-          <div className="flex items-center justify-between flex-col gap-3 lg:flex-row px-6 py-5">
-            <p className="text-gray-500 text-sm text-center">
-              Hiển thị 10 người dùng mỗi trang
-              <span className="sm:inline-block hidden">-</span>{" "}
-              <br className="sm:hidden" /> Tổng cộng 60 người dùng
-            </p>
-            <PaginationCustom
-              totalPages={listUser?.totalPages}
-              currentPage={currentPage}
-              handlePage={handlePage}
-            />
-          </div>
+          {dataSearch.length < 1 && (
+            <div className="flex items-center justify-between flex-col gap-3 lg:flex-row px-6 py-5">
+              <p className="text-gray-500 text-sm text-center">
+                Hiển thị 10 người dùng mỗi trang{" "}
+                <span className="sm:inline-block hidden">-</span>{" "}
+                <br className="sm:hidden" /> Tổng cộng 60 người dùng
+              </p>
+              <PaginationCustom
+                totalPages={listUser?.totalPages}
+                currentPage={currentPage}
+                handlePage={handlePage}
+              />
+            </div>
+          )}
         </div>
       </div>
 
@@ -395,8 +431,6 @@ export default function UserManagement() {
                               {...register("maLoaiNguoiDung")}
                             >
                               <option value="">Chọn tài khoản</option>
-                              {/* <option value="QuanTri">Quản trị</option>
-                              <option value="KhachHang">Khách hàng</option> */}
                               {typeUser.map((item, index) => {
                                 return (
                                   <option
@@ -430,7 +464,7 @@ export default function UserManagement() {
                           Thêm phim mới
                         </button>
                       ) : (
-                        <button className="cursor-pointer text-white bg-pink-600 hover:bg-pink-800 focus:outline-none font-medium rounded-md text-sm px-3 py-3 text-center flex gap-2 items-center">
+                        <button className="cursor-pointer text-white bg-blue-600 hover:bg-blue-800 focus:outline-none font-medium rounded-md text-sm px-3 py-3 text-center flex gap-2 items-center">
                           {isPendingAdd ? (
                             <LoaderCircle className="animate-spin" width={20} />
                           ) : (

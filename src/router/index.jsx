@@ -35,7 +35,7 @@ const router = [
     path: "admin",
     element: AdminTemplate,
     nested: [
-      { path: "dashboard", element: Dashboard },
+      { path: "", element: Dashboard },
       { path: "movie-management", element: MovieManagement },
       { path: "add-movie", element: AddMovies },
       { path: "user-management", element: UserManagement },
