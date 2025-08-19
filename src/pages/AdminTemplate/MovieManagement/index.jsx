@@ -179,13 +179,13 @@ export default function MovieManagement() {
             <h2 className="text-2xl lg:text-3xl font-bold text-gray-800 mb-5 lg:mb-8">
               Quản lý phim
             </h2>
-            <div className="mb-6">
+            {/* <div className="mb-6">
               <input
                 type="text"
                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-pink-400 focus:border-pink-400 block w-full p-2.5"
                 placeholder="Tìm kiếm phim"
               />
-            </div>
+            </div> */}
           </div>
           <button
             onClick={open}
