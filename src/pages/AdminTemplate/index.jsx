@@ -1,14 +1,16 @@
-import { Link, Outlet, useNavigate } from "react-router-dom";
+import { Link, Navigate, Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
 
-import { useAuthStore } from "../../store/auth.store";
 import Avatar from "../HomeTemplate/_components/Header/Avatar";
 
 export default function AdminTemplate() {
-  const navigate = useNavigate();
-    const [isOpen, setIsOpen] = useState(false);
-  const { user, clearUser } = useAuthStore();
+
+  const userLocal = JSON.parse(localStorage.getItem("USER"));
+  if (userLocal?.maLoaiNguoiDung !== "QuanTri") {
+    return (
+      <Navigate to="/"/>
+    );
+  }
 
   return (
     <div>
