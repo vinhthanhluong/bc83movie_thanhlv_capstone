@@ -66,7 +66,7 @@ export default function AdminTemplate() {
           <ul className="space-y-2 font-medium">
             <li>
               <NavLink
-                to="dashboard"
+                to=""
                 className="[&.active]:bg-[var(--mainColor)] [&.active]:text-white [&.active>svg]:text-white flex items-center p-2 text-gray-900 rounded-lg transition duration-200 hover:bg-[var(--mainColor)] hover:text-white group"
               >
                 <svg

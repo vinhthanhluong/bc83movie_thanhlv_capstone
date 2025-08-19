@@ -35,7 +35,7 @@ export default function Login() {
     mutationFn: (values) => getLoginApi(values),
     onSuccess: (user) => {
       if (!user) return;
-      navigate(user.maLoaiNguoiDung === "QuanTri" ? "/admin/dashboard" : "/");
+      navigate(user.maLoaiNguoiDung === "QuanTri" ? "/admin" : "/");
       localStorage.setItem("USER", JSON.stringify(user));
       setUser(user);
       setAlert({
@@ -59,7 +59,7 @@ export default function Login() {
   if (userLocal) {
     return (
       <Navigate
-        to={userLocal.maLoaiNguoiDung === "QuanTri" ? "/admin/dashboard" : "/"}
+        to={userLocal.maLoaiNguoiDung === "QuanTri" ? "/admin" : "/"}
       />
     );
   }

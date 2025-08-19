@@ -24,6 +24,14 @@ export const useGetTypeUser = (optional) =>
     ...optional,
   });
 
+export const useGetSearchUser = (key, optional) =>
+  useQuery({
+    queryKey: ["search-user", key],
+    queryFn: () => getSearchUserApi(key),
+    enabled: !!key,
+    ...optional,
+  });
+
 // export const useGetDetailUser = (optional) => {
 //   return useMutation({
 //     mutationFn: getDetailUserApi,
@@ -97,20 +105,6 @@ export const useUpdateUser = (optional) => {
         title: "Sửa người dùng thất bại",
         text: error?.response?.data?.content,
         icon: "error",
-      });
-    },
-    ...optional,
-  });
-};
-
-export const useGetSearchUser = (optional) => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: getSearchUserApi,
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["list-user"],
       });
     },
     ...optional,

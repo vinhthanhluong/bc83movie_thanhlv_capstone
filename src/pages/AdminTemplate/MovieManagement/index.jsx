@@ -33,7 +33,6 @@ import { confirmDialog } from "../../../utils/dialog";
 
 import PaginationCustom from "../../HomeTemplate/_components/PaginationCustom";
 import Loading from "../../HomeTemplate/_components/Loading";
-import { useQuery } from "@tanstack/react-query";
 
 export default function MovieManagement() {
   let [isOpen, setIsOpen] = useState(false);
@@ -44,15 +43,12 @@ export default function MovieManagement() {
   const [selectedDate, setSelectedDate] = useState("");
 
   const open = () => setIsOpen(true);
-  const close = () => setIsOpen(false);
+  const close = () => {
+    setIsOpen(false);
+    reset();
+  };
   const openDetail = () => setIsOpenDetail(true);
   const closeDetail = () => setIsOpenDetail(false);
-
-  // const { data, isLoading: asd } = useQuery({
-  //   queryKey: ["asdasd"],
-  //   queryFn: () => getMoviePagi(5, 1),
-  // });
-
 
   // getMovieDetail
   const { data: movieDetail = {}, isLoading: isLoadingDetail } =
@@ -84,7 +80,7 @@ export default function MovieManagement() {
     });
   };
 
-  const linkYoutube = movieDetail?.trailer && movieDetail.trailer.slice(-11);
+  // const linkYoutube = movieDetail?.trailer && movieDetail.trailer.slice(-11);
 
   const {
     register,
@@ -123,7 +119,6 @@ export default function MovieManagement() {
   };
 
   const onSubmit = (values) => {
-    console.log("🌲 ~ onSubmit ~ values:", values);
     const { trangThai, ...rest } = values;
     const newValues = {
       ...rest,
@@ -135,6 +130,7 @@ export default function MovieManagement() {
     for (let key in newValues) {
       formData.append(key, newValues[key]);
     }
+
     if (values.maPhim) {
       updateMovie(formData, {
         onSuccess: () => {
@@ -156,7 +152,7 @@ export default function MovieManagement() {
   };
 
   useEffect(() => {
-    if (!movieDetail) return;
+    if (!idDetail || !movieDetail) return;
     const ngayKhoiChieuDate = movieDetail.ngayKhoiChieu
       ? new Date(movieDetail.ngayKhoiChieu)
       : null;
@@ -172,9 +168,8 @@ export default function MovieManagement() {
       danhGia: movieDetail.danhGia,
       hot: movieDetail.hot,
       trangThai: movieDetail.dangChieu ? "true" : "false",
-      // ngayKhoiChieu: movieDetail.ngayKhoiChieu,
     });
-  }, [idDetail, movieDetail?.maPhim, reset]);
+  }, [idDetail, movieDetail, reset]);
 
   return (
     <>
@@ -729,7 +724,10 @@ export default function MovieManagement() {
                           <div className="aspect-video bg-gray-200 rounded-lg overflow-hidden">
                             <iframe
                               // src={`https://www.youtube.com/embed/${linkYoutube}?si=Bcv6CYDRjkYWQt1k`}
-                              src={movieDetail?.trailer?.replace("watch?v=" , "embed/")}
+                              src={movieDetail?.trailer?.replace(
+                                "watch?v=",
+                                "embed/"
+                              )}
                               title="Movie Trailer"
                               className="w-full h-full"
                               frameBorder={0}

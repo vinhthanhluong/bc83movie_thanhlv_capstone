@@ -19,19 +19,22 @@ export const useGetMovieDetail = (idMovie, optional = {}) =>
 
 export const useGetMovieAdmin = (currentPage, optional = {}) =>
   useQuery({
-    queryKey: ["addMovie-admin", currentPage],
+    queryKey: ["listMovie-admin", currentPage],
     queryFn: () => getMoviePagi(5, currentPage),
     ...optional,
   });
 
-export const useCreateMovie = (optional = {}) =>
-  useMutation({
+export const useCreateMovie = (optional = {}) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
     mutationFn: addMovie,
     onSuccess: () => {
       showDialog({
         title: "Tạo phim thành công",
         icon: "success",
       });
+      queryClient.invalidateQueries({ queryKey: ["listMovie-admin"] });
     },
     onError: () => {
       showDialog({
@@ -41,6 +44,7 @@ export const useCreateMovie = (optional = {}) =>
     },
     ...optional,
   });
+};
 
 export const useDeleteMovie = (optional = {}) => {
   const queryClient = useQueryClient();
@@ -52,7 +56,7 @@ export const useDeleteMovie = (optional = {}) => {
         title: "Đã xóa thành công",
         icon: "success",
       });
-      queryClient.invalidateQueries({ queryKey: ["addMovie-admin"] });
+      queryClient.invalidateQueries({ queryKey: ["listMovie-admin"] });
     },
     onError: () => {
       showDialog({
@@ -74,12 +78,13 @@ export const useUpDateMovie = (optional = {}) => {
         title: "Đã cập nhật thành công",
         icon: "success",
       });
-      queryClient.invalidateQueries({ queryKey: ["addMovie-admin"] });
+      queryClient.invalidateQueries({ queryKey: ["listMovie-admin"] });
       queryClient.invalidateQueries({ queryKey: ["movieDetail"] });
     },
-    onError: () => {
+    onError: (error) => {
       showDialog({
         title: "Đã cập nhật thất bại",
+        text: error?.response?.data?.content,
         icon: "error",
       });
     },
