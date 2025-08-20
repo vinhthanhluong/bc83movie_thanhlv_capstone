@@ -1,4 +1,4 @@
-import { ArchiveRestore } from "lucide-react";
+import { ArchiveRestore, LoaderCircle } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import { Navigate, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -58,9 +58,7 @@ export default function Login() {
   const userLocal = JSON.parse(localStorage.getItem("USER"));
   if (userLocal) {
     return (
-      <Navigate
-        to={userLocal.maLoaiNguoiDung === "QuanTri" ? "/admin" : "/"}
-      />
+      <Navigate to={userLocal.maLoaiNguoiDung === "QuanTri" ? "/admin" : "/"} />
     );
   }
 
@@ -132,7 +130,9 @@ export default function Login() {
               type="submit"
               className="flex justify-center items-center w-full py-2 px-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-md hover:opacity-90 transition"
             >
-              {isPending && <ArchiveRestore width={20} />}
+              {isPending && (
+                <LoaderCircle className="animate-spin" width={20} />
+              )}
               Đăng Nhập
             </button>
           </form>

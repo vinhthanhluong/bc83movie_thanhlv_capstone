@@ -7,6 +7,7 @@ const userLocal = localStorage.getItem("USER")
 export const useAuthStore = create((set) => ({
   user: userLocal,
   setUser: (state) => set({ user: state }),
+  
   clearUser: (navigate) => {
     localStorage.clear();
     navigate("/");

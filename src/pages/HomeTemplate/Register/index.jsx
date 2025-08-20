@@ -5,6 +5,7 @@ import { useAuthStore } from "../../../store/auth.store";
 import { useNavigate } from "react-router-dom";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { LoaderCircle } from "lucide-react";
 
 const schema = z.object({
   taiKhoan: z.string().nonempty("Tài khoản không được để trống"),
@@ -184,7 +185,7 @@ export default function Register() {
               type="submit"
               className="flex justify-center items-center w-full py-2 px-4 bg-gradient-to-r from-pink-500 to-purple-500 text-white font-semibold rounded-md hover:opacity-90 transition"
             >
-              {isPending && <ArchiveRestore width={20} />}
+              {isPending && <LoaderCircle width={20} />}
               Đăng ký
             </button>
           </form>
