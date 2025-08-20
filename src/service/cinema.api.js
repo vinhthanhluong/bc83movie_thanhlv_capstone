@@ -27,3 +27,13 @@ export const getCinemaTicket = async (ticketId) => {
     throw error;
   }
 };
+
+export const addTicket = async (data) => {
+  try {
+    const response = await api.post(`/QuanLyDatVe/DatVe`, data);
+    return response.data.content;
+  } catch (error) {
+    console.log("🌲 ~ addTicket ~ error:", error)
+    throw error;
+  }
+};

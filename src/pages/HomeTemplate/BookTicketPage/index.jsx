@@ -1,24 +1,36 @@
-import { Fragment, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
-import { useQuery } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
-import { CircleX } from "lucide-react";
-import { getCinemaTicket } from "../../../service/cinema.api";
+import { CircleX, LoaderCircle } from "lucide-react";
 import { useCinemaStore } from "../../../store/cinema.store";
 import Loading from "../_components/Loading";
+import { useAddTicket, useCinemaTicket } from "../../../hooks/useCinemaTicket";
+import { confirmDialog } from "../../../utils/dialog";
 
 export default function BookTicketPage() {
   const { cartTicket, setCartTicket, setDeleteTicket } = useCinemaStore();
-  console.log("🌲 ~ BookTicketPage ~ cartTicket:", cartTicket);
-
   const { ticketId } = useParams();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ["cinema-ticket"],
-    queryFn: () => getCinemaTicket(ticketId),
-  });
-  const dataInfo = data?.thongTinPhim;
-  const dataSeat = data?.danhSachGhe;
+  const { data: cinema, isLoading } = useCinemaTicket(ticketId);
+  const { mutate: mutateTicket, isPending: isPendingTicket } = useAddTicket();
+  const dataInfo = cinema?.thongTinPhim;
+  const dataSeat = cinema?.danhSachGhe;
+
+  const handleBooking = () => {
+    let ticketCutom = cartTicket.map(({ giaVe, maGhe }) => ({
+      giaVe,
+      maGhe,
+    }));
+    if (ticketCutom.length == 0) return;
+    const dataTicket = {
+      maLichChieu: dataInfo?.maLichChieu,
+      danhSachVe: ticketCutom,
+    };
+    confirmDialog().then((result) => {
+      if (result.isConfirmed) {
+        mutateTicket(dataTicket);
+        setDeleteTicket();
+      }
+    });
+  };
 
   const formatMoney = (val) => {
     return new Intl.NumberFormat("vi-VN", {
@@ -34,7 +46,6 @@ export default function BookTicketPage() {
     <div className="min-h-screen bg-gray-50 text-white p-6">
       <div className="max-w-7xl mx-auto xl:grid xl:grid-cols-8 gap-6 items-start">
         <div className="xl:col-span-5 space-y-6">
-
           <div className="overflow-auto">
             <div className="border-b border-orange-400 pb-2 text-center mb-5 min-w-[700px]">
               <div className="text-sm text-gray-700 mb-2">Màn hình</div>
@@ -42,7 +53,7 @@ export default function BookTicketPage() {
             </div>
             <div className="bg-[#eee] shadow-md p-4 min-h-[200px] min-w-[200px] relative rounded w-fit mx-auto">
               {isLoading && <Loading />}
-  
+
               <div className="grid grid-cols-15 gap-2  min-w-[700px] ">
                 {dataSeat?.map((item, index) => (
                   <div key={index}>
@@ -51,17 +62,17 @@ export default function BookTicketPage() {
                       type="checkbox"
                       id={index}
                       className="hidden peer"
-                      checked={cartTicket.some((t) =>
+                      defaultChecked={cartTicket.some((t) =>
                         t.stt === item.stt ? true : false
                       )}
                     />
                     <label
                       htmlFor={index}
-                      className={`w-10 h-10 text-[14px] flex items-center justify-center rounded text-white font-bold cursor-pointer ${
-                        item.loaiGhe === "Thuong" ? "bg-[#b1b3b6]" : "bg-pink-500"
-                      } peer-checked:bg-green-500 ${
-                        item.daDat ? "pointer-events-none bg-red-400" : ""
-                      }`}
+                      className={`peer-disabled:bg-red-400 peer-disabled:pointer-events-none w-10 h-10 text-[14px] flex items-center justify-center rounded text-white font-bold cursor-pointer ${
+                        item.loaiGhe === "Thuong"
+                          ? "bg-[#b1b3b6]"
+                          : "bg-pink-500"
+                      } peer-checked:bg-green-500 `}
                       onClick={() => setCartTicket(item)}
                     >
                       {`A${item.tenGhe}`}
@@ -122,7 +133,7 @@ export default function BookTicketPage() {
                 <span>⏳</span>
                 <span>Thời lượng</span>
               </div>
-              <span className="font-semibold text-blue-900">--- phút</span>
+              <span className="font-semibold text-blue-900">120 phút</span>
             </div>
             <div className="flex md:items-center justify-between flex-wrap flex-col md:flex-row">
               <div className="flex items-center gap-2 shrink pr-3">
@@ -168,7 +179,13 @@ export default function BookTicketPage() {
                 )}
               </span>
             </div>
-            <button className="cursor-pointer mt-6 w-full bg-gradient-to-r bg-[#E82E96] to-purple-700 hover:from-pink-500 hover:to-pink-500 text-white py-2 rounded-md transition duration-300">
+            <button
+              onClick={handleBooking}
+              className="flex justify-center gap-2 cursor-pointer mt-6 w-full bg-gradient-to-r bg-[#E82E96] to-purple-700 hover:from-pink-500 hover:to-pink-500 text-white py-2 rounded-md transition duration-300"
+            >
+              {isPendingTicket && (
+                <LoaderCircle className="animate-spin" width={20} />
+              )}
               Xác nhận &amp; Thanh toán
             </button>
           </div>
