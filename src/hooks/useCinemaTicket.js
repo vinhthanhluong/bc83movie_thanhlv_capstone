@@ -1,15 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { addTicket, getCinemaDetail, getCinemaTicket } from "../service/cinema.api";
+import {
+  addTicket,
+  getCinemaDetail,
+  getCinemaTicket,
+} from "../service/cinema.api";
 import { showDialog } from "../utils/dialog";
 
 export const useCinemaDetail = (movieId, optional) =>
   useQuery({
-    queryKey: ["Movie-detail"],
+    queryKey: ["Movie-detail", movieId],
     queryFn: () => getCinemaDetail(movieId),
     enabled: !!movieId,
     ...optional,
   });
-
 
 export const useCinemaTicket = (ticketId, optional) =>
   useQuery({
