@@ -2,15 +2,13 @@ import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getMoviePagi } from "../../../service/movie.api";
 import { useNavigate } from "react-router-dom";
+import { useGetMoviePagi } from "../../../hooks/useMovieQuery";
 
 export default function MovieShowing({ idCurrent }) {
   const navigate = useNavigate();
   const [dataNew, setDataNew] = useState(null);
 
-  const { data = {}, isLoading } = useQuery({
-    queryKey: ["movie-detail-showing"],
-    queryFn: () => getMoviePagi(14),
-  });
+  const { data = {}, isLoading } = useGetMoviePagi(14, 1);
 
   useEffect(() => {
     const dNew = data?.items?.filter(

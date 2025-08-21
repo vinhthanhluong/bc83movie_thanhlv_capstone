@@ -1,38 +1,32 @@
 import { useState, useEffect } from "react";
-import { Star } from "lucide-react";
-import { useNavigate, useParams } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { useParams } from "react-router-dom";
 import { format } from "date-fns";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper/modules";
 import MovieShowing from "./MovieShowing";
-import { getCinemaDetail } from "../../../service/cinema.api.js";
 import PopupMovie from "../_components/PopupMovie";
 import { useHomeStore } from "../../../store/home.store.js";
-import { useCinemaStore } from "../../../store/cinema.store.js";
 import Loading from "../_components/Loading/index.jsx";
 import { useCinemaDetail } from "../../../hooks/useCinemaTicket.js";
+import CinemaItemCmp from "./CinemaItemCmp";
 
 export default function MovieDetailPage() {
   const { movieId } = useParams();
-  const navigate = useNavigate();
+  console.log("🌲 ~ MovieDetailPage ~ movieId:", movieId)
+
   const setIsOpenMovie = useHomeStore((state) => state.setIsOpenMovie);
 
   const [isReadMore, setIsReadMore] = useState(false);
-
-  const [cinemaItem, setCinemaItem] = useState(null);
-  const [isActive, setIsActive] = useState(cinemaItem?.maHeThongRap);
+  const [cinemaItemBrand, setCinemaItemBrand] = useState(null);
+  const [isActive, setIsActive] = useState(cinemaItemBrand?.maHeThongRap);
 
   const { data = {}, isLoading } = useCinemaDetail(movieId);
 
   useEffect(() => {
-    data?.heThongRapChieu?.length && setCinemaItem(data.heThongRapChieu[0]);
+    data?.heThongRapChieu?.length && setCinemaItemBrand(data.heThongRapChieu[0]);
   }, [data]);
-
-  // console.log("🌲 ~ MovieDetailPage ~ cinemaItem:", cinemaItem);
-  const [dateCinema, setDateCinema] = useState(null);
-  // console.log("🌲 ~ MovieDetailPage ~ dateCinema:", dateCinema)
 
   return (
     <div className="mx-auto py-4 text-white">
@@ -155,42 +149,10 @@ export default function MovieDetailPage() {
 
             <div className="block">
               <div className="cinema-swiper-next bg-white px-1 absolute right-0 inset-y-0 flex items-center z-10 text-white text-3xl cursor-pointer [&.swiper-button-disabled]:opacity-0">
-                <svg
-                  className="w-6 h-6 text-gray-800 dark:text-white"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width={24}
-                  height={24}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="m9 5 7 7-7 7"
-                  />
-                </svg>
+                <ChevronRight className="size-5" />
               </div>
               <div className="cinema-swiper-prev bg-white px-1 absolute left-0 inset-y-0 flex items-center z-10 text-white text-3xl cursor-pointer [&.swiper-button-disabled]:opacity-0">
-                <svg
-                  className="w-6 h-6 text-gray-800 dark:text-white"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width={24}
-                  height={24}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="m15 19-7-7 7-7"
-                  />
-                </svg>
+                <ChevronLeft className="size-5" />
               </div>
 
               <Swiper
@@ -209,7 +171,7 @@ export default function MovieDetailPage() {
                       <button
                         className="flex flex-col items-center space-y-1 text-gray-700 cursor-pointer w-12"
                         onClick={() => {
-                          setCinemaItem(cinema);
+                          setCinemaItemBrand(cinema);
                           setIsActive(cinema.maHeThongRap);
                         }}
                       >
@@ -233,147 +195,19 @@ export default function MovieDetailPage() {
             </div>
           </div>
 
-          <div className="relative flex items-center overflow-x-auto py-4 px-5 border-[#E7E4E6] border-t">
-            {/* Navigation buttons */}
-
-            <div className="block">
-              <Swiper
-                slidesPerView={"auto"}
-                spaceBetween={10}
-                modules={[Navigation]}
-                className="cinema-day-swiper"
-                navigation={{
-                  nextEl: ".cinema-day-swiper-next .swiper-button-next",
-                  prevEl: ".cinema-day-swiper-prev .swiper-button-prev",
-                }}
-              >
-                {/* {cinemaItem?.cumRapChieu?.lichChieuPhim?.map(
-                  (item, index) => {}
-                )} */}
-                <SwiperSlide>
-                  <div className="w-16 cursor-pointer overflow-hidden rounded border bg-white py-0 text-center transition-all border-pink-700">
-                    <div className="mx-auto justify-center py-1 text-lg font-semibold bg-pink-600 text-white">
-                      11
-                    </div>
-                    <div className="text-nowrap flex  h-6 items-center justify-center text-xs text-pink-600">
-                      Thứ 2
-                    </div>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className=" w-16 cursor-pointer overflow-hidden rounded border bg-white py-0 text-center transition-all border-gray-300 hover:border-gray-400 ">
-                    <div className="mx-auto justify-center py-1 text-lg font-semibold text-gray-800 bg-gray-100 ">
-                      12
-                    </div>
-                    <div className="text-nowrap flex  h-6 items-center justify-center text-xs text-gray-400">
-                      Thứ 3
-                    </div>
-                  </div>
-                </SwiperSlide>
-                <SwiperSlide>
-                  <div className=" w-16 cursor-pointer overflow-hidden rounded border bg-white py-0 text-center transition-all border-gray-300 hover:border-gray-400 ">
-                    <div className="mx-auto justify-center py-1 text-lg font-semibold text-gray-800 bg-gray-100 ">
-                      13
-                    </div>
-                    <div className="text-nowrap flex  h-6 items-center justify-center text-xs text-gray-400">
-                      Thứ 4
-                    </div>
-                  </div>
-                </SwiperSlide>
-              </Swiper>
-            </div>
-          </div>
-
-          <div className="max-w-3xl mx-auto relative min-h-[300px]">
+          <div className="max-w-3xl mx-auto relative min-h-[90px]">
             {isLoading && <Loading />}
 
-            {cinemaItem?.cumRapChieu?.map((item, index) => {
-              // const showTime = item?.lichChieuPhim?.filter((dt) => {
-              //   const dmy = dt?.ngayChieuGioChieu?.slice(0, 10);
-              //   // 2025-04-15T14:30:00
-              //   // 2025-04-08T00:00:00
-              // });
-
-              const groupedByDate = item?.lichChieuPhim?.reduce(
-                (acc, dateTime) => {
-                  const dmy = dateTime.ngayChieuGioChieu.slice(0, 10);
-                  if (!acc[dmy]) {
-                    acc[dmy] = [];
-                  }
-                  acc[dmy].push(dateTime);
-                  return acc;
-                },
-                {}
-              );
+            {cinemaItemBrand?.cumRapChieu?.map((item, index) => {
               return (
-                <div
+                <CinemaItemCmp
                   key={index}
-                  className="flex justify-between items-start p-5 bg-white hover:bg-gray-50 transition border-t border-[#E7E4E6]"
-                >
-                  <div>
-                    <div className="flex items-center">
-                      <img
-                        className="w-[32px] h-[32px] border border-[#E7E4E6] mr-2.5"
-                        src={item.hinhAnh}
-                        alt="logo"
-                      />
-                      <div>
-                        <h4 className="text-black font-semibold">
-                          {item.tenCumRap}
-                        </h4>
-                        <p className="text-sm text-gray-600">{item.diaChi}</p>
-                      </div>
-                    </div>
-                    {/* Date */}
-
-                    <div className="mt-3 flex gap-2 flex-wrap">
-                      {Object.entries(groupedByDate)?.map((date, index) => {
-                        console.log("🌲 ~ date:", date[0]);
-                        return (
-                          <div
-                            key={index}
-                            className="w-16 cursor-pointer overflow-hidden rounded border bg-white py-0 text-center transition-all border-pink-700"
-                          >
-                            <div className="mx-auto justify-center py-1 text-md font-semibold bg-pink-600 text-white">
-                              {date[0] && format(date[0], "dd/MM")}
-                            </div>
-                            <div className="text-nowrap flex  h-6 items-center justify-center text-xs text-pink-600">
-                              {/* Thứ 2 */}
-                              {date[0] && format(date[0], "EEEE")}
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-
-                    {/* <div className="flex flex-wrap gap-3 pt-4">
-                      {item?.lichChieuPhim?.map((itm, i) => (
-                        <button
-                          key={i}
-                          className="px-5 py-1.5 border border-pink-500 text-black rounded hover:bg-pink-100 transition cursor-pointer"
-                          onClick={() => {
-                            navigate(`/book-ticket/${itm.maLichChieu}`);
-                          }}
-                        >
-                          {itm.ngayChieuGioChieu &&
-                            format(itm.ngayChieuGioChieu, "dd")}
-                          *{" "}
-                          {itm.ngayChieuGioChieu &&
-                            format(itm.ngayChieuGioChieu, "EEEE")}{" "}
-                          * -{" "}
-                          {itm.ngayChieuGioChieu &&
-                            format(itm.ngayChieuGioChieu, "HH:mm")}
-                        </button>
-                      ))}
-                    </div> */}
-                  </div>
-                </div>
+                  index={index}
+                  item={item}
+                  cinemaItemBrand={cinemaItemBrand}
+                />
               );
             })}
-
-            {/* <button className="bg-pink-500 hover:bg-pink-700 text-white font-bold py-2 px-4 rounded mx-auto flex mt-4 transition-all duration-300">
-              Xem thêm
-            </button> */}
           </div>
         </div>
         <div className="mt-4 col-span-3 lg:pl-5">

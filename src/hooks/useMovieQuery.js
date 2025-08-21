@@ -17,10 +17,10 @@ export const useGetMovieDetail = (idMovie, optional = {}) =>
     ...optional,
   });
 
-export const useGetMovieAdmin = (currentPage, optional = {}) =>
+export const useGetMoviePagi = (numItem , currentPage, optional = {}) =>
   useQuery({
-    queryKey: ["listMovie-admin", currentPage],
-    queryFn: () => getMoviePagi(5, currentPage),
+    queryKey: ["listMovie-pagi", currentPage],
+    queryFn: () => getMoviePagi(numItem, currentPage),
     ...optional,
   });
 
@@ -34,7 +34,7 @@ export const useCreateMovie = (optional = {}) => {
         title: "Tạo phim thành công",
         icon: "success",
       });
-      queryClient.invalidateQueries({ queryKey: ["listMovie-admin"] });
+      queryClient.invalidateQueries({ queryKey: ["listMovie-pagi"] });
     },
     onError: () => {
       showDialog({
@@ -56,7 +56,7 @@ export const useDeleteMovie = (optional = {}) => {
         title: "Đã xóa thành công",
         icon: "success",
       });
-      queryClient.invalidateQueries({ queryKey: ["listMovie-admin"] });
+      queryClient.invalidateQueries({ queryKey: ["listMovie-pagi"] });
     },
     onError: () => {
       showDialog({
@@ -78,7 +78,7 @@ export const useUpDateMovie = (optional = {}) => {
         title: "Đã cập nhật thành công",
         icon: "success",
       });
-      queryClient.invalidateQueries({ queryKey: ["listMovie-admin"] });
+      queryClient.invalidateQueries({ queryKey: ["listMovie-pagi"] });
       queryClient.invalidateQueries({ queryKey: ["movieDetail"] });
     },
     onError: (error) => {

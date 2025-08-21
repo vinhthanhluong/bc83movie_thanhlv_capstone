@@ -25,7 +25,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import {
   useCreateMovie,
   useDeleteMovie,
-  useGetMovieAdmin,
+  useGetMoviePagi,
   useGetMovieDetail,
 } from "../../../hooks/useMovieQuery";
 import { confirmDialog } from "../../../utils/dialog";
@@ -51,7 +51,7 @@ export default function MovieManagement() {
     useGetMovieDetail(idDetail);
   console.log("🌲 ~ MovieManagement ~ movieDetail:", movieDetail);
   // getMovie
-  const { data: movie, isLoading } = useGetMovieAdmin(currentPage);
+  const { data: movie, isLoading } = useGetMoviePagi(currentPage);
   // addMovie
   const { mutate: createMovie, isPending: createIsPending } = useCreateMovie();
   // deleteMovie
